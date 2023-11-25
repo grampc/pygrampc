@@ -1,0 +1,26 @@
+[build-system]
+requires = ["scikit-build-core>=0.3.3", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "pygrampc"
+version = "2.2.1"
+description="Python interface for the MPC solver GRAMPC"
+readme = "README.md"
+authors = [
+  { name = "Thore Wietzke", email = "Thore.Wietzke@fau.de" },
+]
+requires-python = ">=3.8"
+classifiers = [
+  "License :: OSI Approved :: BSD",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+
+[tool.scikit-build]
+wheel.expand-macos-universal-tags = true
+
+[tool.scikit-build.cmake.define]

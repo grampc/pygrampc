@@ -1,0 +1,6 @@
+[submodule "grampc"]
+	path = grampc
+	url = https://github.com/grampc/grampc.git
+[submodule "eigen"]
+	path = eigen
+	url = https://gitlab.com/libeigen/eigen.git
