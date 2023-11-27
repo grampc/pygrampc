@@ -72,6 +72,9 @@ def lfct(self, out, t, x, u, p, xdes, udes):
     out[0] = np.dot(self.Q, np.power(x - xdes, 2)) + np.dot(self.R, np.power(u - udes, 2))
 ```
 
+#### Debugging
+Debugging the Python problem description is very simple, just put in a breakpoint inside the function of interest and start the Python debugger.
+
 ### C++ Problem Description
 If extra speed is desired, the Python interface can be used with a compiled problem description. 
 Inside the template folder there is a C++ template with a CMakeLists.txt file for compilation. 
@@ -82,4 +85,10 @@ Using the C++ problem description can result in a 100 times speedup per time ste
 For an example, please refer to the `Crane2D` example. 
 There exists a Python and C++ problem description, which showcases the achieved speedup.
 
-
+#### Debugging 
+Debugging the C++ is more complicated than Python debugging. First, the toolbox needs to be compiled with Debug symbols. This can be achieved with
+```
+pip install --config-settings=cmake.build-type="DEBUG" "path to interface"
+```
+Then compile your C++ problem description in debug mode and use a suitable debugger. 
+Using the `Python C++ Debugger` extensions for VS Code is a reliable way to debug Python an C++ code.
