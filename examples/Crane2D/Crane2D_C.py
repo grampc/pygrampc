@@ -43,9 +43,6 @@ if __name__ == "__main__":
         grampc.set_param({"x0": sol.y[:, -1],
                           "t0": t + dt})
 
-        # evaluate inequality constraints
-        vec.constr[i, :] = grampc.hfct(vec.t[i], vec.x[i, :], vec.u[i, :], vec.p[i, :])
-
         # plots of the grampc predictions
         if i % plotSteps == 0:
             grampc.plot()

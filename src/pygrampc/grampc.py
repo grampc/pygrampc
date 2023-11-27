@@ -384,23 +384,22 @@ class GrampcResults:
         if grampc.opt.LineSearchType != 0:
             self.lsExplicit[index] = grampc.rws.lsExplicit[2]
 
+        # retrieve the equality and inequality constraints
         if grampc.param.Ng + grampc.param.Nh > 0:
-            self.constr[index, :] = np.append(
-                grampc.rws.cfct[0:self._id.g, 0],
-                # append the unequality constraints to the equality constraints
-                # if is needed to check if unequality constraints are present
-                np.maximum(0, grampc.rws.cfct[self._id.g:self._id.h, 0]) if grampc.rws.cfct[self._id.g:self._id.h, 0].size else []
-            )
+            if grampc.param.Ng:
+                self.constr[index, 0:self._id.g] = grampc.gfct(self.t[index], self.x[index, :], self.u[index, :], self.p[index, :])
+            if grampc.param.Nh:
+                self.constr[index, self._id.g:self._id.h] = grampc.hfct(self.t[index], self.x[index, :], self.u[index, :], self.p[index, :])
+
             self.mult[index, :] = grampc.rws.mult[0:self._id.h, 0]
             self.pen[index, :] = grampc.rws.pen[0:self._id.h, 0]
 
         if grampc.param.NgT + grampc.param.NhT > 0:
-            self.constrT[index, :] = np.append(
-                grampc.rws.cfct[self._id.h:self._id.gT, -1],
-                # append the unequality constraints to the equality constraints
-                # if is needed to check if unequality constraints are present
-                np.maximum(0, grampc.rws.cfct[self._id.gT:self._id.hT, -1]) if grampc.rws.cfct[self._id.gT:self._id.hT, -1].size else []
-            )
+            if grampc.param.NgT:
+                self.constr[index, self._id.h:self._id.gT] = grampc.gTfct(self.t[index], self.x[index, :], self.p[index, :])
+            if grampc.param.NhT:
+                self.constr[index, self._id.gT:self._id.hT] = grampc.hTfct(self.t[index], self.x[index, :], self.p[index, :])
+
             self.multT[index, :] = grampc.rws.mult[self._id.h:self._id.hT, -1]
             self.penT[index, :] = grampc.rws.pen[self._id.h:self._id.gT, -1]
 
