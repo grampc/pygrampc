@@ -1,24 +1,13 @@
-/* GRAMPC -- A software framework for embedded nonlinear model predictive
- * control using a gradient-based augmented Lagrangian approach
+/* This file is part of PyGRAMPC - (https://github.com/grampc/pygrampc)
  *
- * Copyright (C) 2014-2018 by Tobias Englert, Knut Graichen, Felix Mesmer,
- * Soenke Rhein, Andreas Voelz, Bartosz Kaepernick (<v2.0), Tilman Utz (<v2.0).
- * Developed at the Institute of Measurement, Control, and Microtechnology,
- * Ulm University. All rights reserved.
+ * PyGRAMPC -- A Python interface for the GRAMPC solver
  *
- * GRAMPC is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
+ * Copyright 2023 by Thore Wietzke and Andreas Voelz
+ * All rights reserved.
  *
- * GRAMPC is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with GRAMPC. If not, see <http://www.gnu.org/licenses/>
+ * PyGRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
  */
+
 #include "grampc_binding.hpp"
 
 // Eigen::Map needs to be explicitly constructed

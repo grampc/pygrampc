@@ -1,16 +1,12 @@
-/* This file is part of GRAMPC - (https://sourceforge.net/projects/grampc/)
+/* This file is part of PyGRAMPC - (https://github.com/grampc/pygrampc)
  *
- * GRAMPC -- A software framework for embedded nonlinear model predictive
- * control using a gradient-based augmented Lagrangian approach
+ * PyGRAMPC -- A Python interface for the GRAMPC solver
  *
- * Copyright 2014-2019 by Tobias Englert, Knut Graichen, Felix Mesmer,
- * Soenke Rhein, Andreas Voelz, Bartosz Kaepernick (<v2.0), Tilman Utz (<v2.0).
+ * Copyright 2023 by Thore Wietzke and Andreas Voelz
  * All rights reserved.
  *
- * GRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
- *
+ * PyGRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
  */
-
 
 #include "problem_base.hpp"
 

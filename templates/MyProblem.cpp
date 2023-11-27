@@ -1,3 +1,13 @@
+/* This file is part of PyGRAMPC - (https://github.com/grampc/pygrampc)
+ *
+ * PyGRAMPC -- A Python interface for the GRAMPC solver
+ *
+ * Copyright 2023 by Thore Wietzke and Andreas Voelz
+ * All rights reserved.
+ *
+ * PyGRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
+ */
+
 #include "MyProblem.hpp"
 #include <cmath>
 

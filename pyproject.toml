@@ -9,6 +9,7 @@ description="Python interface for the MPC solver GRAMPC"
 readme = "README.md"
 authors = [
   { name = "Thore Wietzke", email = "Thore.Wietzke@fau.de" },
+  { name = "Andreas Voelz", email = "Andreas.Voelz@fau.de" },
 ]
 requires-python = ">=3.8"
 classifiers = [
