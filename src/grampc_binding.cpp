@@ -21,7 +21,7 @@
  */
 #include "grampc_binding.hpp"
 
-// Eigen::Map needs to explicitly constructed
+// Eigen::Map needs to be explicitly constructed
 GrampcBinding::grampc_param::grampc_param()
     : x0(NULL, 0), xdes(NULL, 0), u0(NULL, 0), udes(NULL, 0),
       umax(NULL, 0), umin(NULL, 0), p0(NULL, 0), pmax(NULL, 0), pmin(NULL, 0)
@@ -61,7 +61,7 @@ void GrampcBinding::grampc_param::reMapMemory(const typeGRAMPC *grampc)
     t0 = &grampc->param->t0;
 }
 
-// Eigen::Map needs to explicitly constructed
+// Eigen::Map needs to be explicitly constructed
 GrampcBinding::grampc_opt::grampc_opt()
     : xScale(NULL, 0), xOffset(NULL, 0), uScale(NULL, 0), uOffset(NULL, 0),
       pScale(NULL, 0), pOffset(NULL, 0), cScale(NULL, 0), ConstraintsAbsTol(NULL, 0)
@@ -135,7 +135,7 @@ void GrampcBinding::grampc_opt::reMapMemory(const typeGRAMPC *grampc)
     ConvergenceGradientRelTol = &grampc->opt->ConvergenceGradientRelTol;
 }
 
-// Eigen::Map needs to explicitly constructed
+// Eigen::Map needs to be explicitly constructed
 GrampcBinding::grampc_sol::grampc_sol()
     : xnext(NULL, 0), unext(NULL, 0), pnext(NULL, 0), J(NULL, 0)
 {
@@ -154,7 +154,7 @@ void GrampcBinding::grampc_sol::reMapMemory(const typeGRAMPC *grampc)
     status = grampc->sol->status;
 }
 
-// Eigen::Map needs to explicitly constructed
+// Eigen::Map needs to be explicitly constructed
 GrampcBinding::grampc_rws::grampc_rws()
     : t(NULL, 0), tls(NULL, 0), x(NULL, 0, 0), adj(NULL, 0, 0), dcdx(NULL, 0, 0), u(NULL, 0, 0), uls(NULL, 0, 0), 
       uprev(NULL, 0, 0), gradu(NULL, 0, 0), graduprev(NULL, 0, 0), dcdu(NULL, 0, 0), p(NULL, 0, 0), pls(NULL, 0, 0), 

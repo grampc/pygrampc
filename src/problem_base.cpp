@@ -32,6 +32,7 @@ extern "C"
 	void ffct(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM *userparam)
 	{
         ProblemBase* problem = (ProblemBase*) userparam;
+        // mapping the C pointer to an Eigen::Vector, so that the data is exposed as an numpy array in Python
         Eigen::Map<Vector> outMap(out, problem->Nx_);
         Eigen::Map<const Vector> xMap(x, problem->Nx_);
         Eigen::Map<const Vector> uMap(u, problem->Nu_);

@@ -238,7 +238,7 @@ class GrampcBinding
         ProblemBase* problem_binding;
 
     public:
-        /** Create python interface to the GRAMPC solver for problem description */
+        // Create python interface to the GRAMPC solver for problem description
         GrampcBinding(ProblemBase* problem);
         ~GrampcBinding();
 
@@ -266,7 +266,7 @@ class GrampcBinding
         // Sets the option of type typeRNum array given by the literal string key.
         void set_opt_real_vec(const std::string& key, const std::vector<typeRNum>& values);
 
-        /* access the probFct like the Matlab interface*/
+        // access the probFct like the Matlab interface
         Vector ffct(typeRNum t, Vector x, Vector u, Vector p);
 
         typeRNum lfct(typeRNum t, Vector x, Vector u, Vector p, Vector xdes, Vector udes);
