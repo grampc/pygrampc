@@ -12,7 +12,7 @@ authors = [
 ]
 requires-python = ">=3.8"
 classifiers = [
-  "License :: OSI Approved :: BSD",
+  "License :: OSI Approved :: BSD License",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
@@ -22,5 +22,3 @@ classifiers = [
 
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true
-
-[tool.scikit-build.cmake.define]

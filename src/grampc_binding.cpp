@@ -425,7 +425,11 @@ PYBIND11_MODULE(_core, m)
         .def("hfct", &GrampcBinding::hfct)
         .def("gTfct", &GrampcBinding::gTfct)
         .def("hTfct", &GrampcBinding::hTfct)
-        .def("estim_penmin", &GrampcBinding::estim_penmin);
+        .def("estim_penmin", &GrampcBinding::estim_penmin, R"pbdoc(
+            Estimates the minimal penalty parameter value. 
+            Arguments: 
+            run_grampc (bool): Specifies if grampc_run() shall be called.
+        )pbdoc");
 
     typedef GrampcBinding::grampc_param prefix_param;
     pybind11::class_<GrampcBinding::grampc_param>(binding, "grampc_param")
