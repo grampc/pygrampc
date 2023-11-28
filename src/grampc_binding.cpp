@@ -421,7 +421,7 @@ PYBIND11_MODULE(_core, m)
         )pbdoc");
 
     typedef GrampcBinding::grampc_param prefix_param;
-    pybind11::class_<GrampcBinding::grampc_param>(binding, "grampc_param")
+    pybind11::class_<GrampcBinding::grampc_param>(binding, "_grampc_param")
         .def(pybind11::init<>())
         .def_readonly("Nx", &prefix_param::Nx)
         .def_readonly("Nu", &prefix_param::Nu)
@@ -451,7 +451,7 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("t0", &prefix_param::t0);
 
     typedef GrampcBinding::grampc_opt prefix_opt;
-    pybind11::class_<GrampcBinding::grampc_opt>(binding, "grampc_opt")
+    pybind11::class_<GrampcBinding::grampc_opt>(binding, "_grampc_opt")
         .def(pybind11::init<>())
         .def_readonly("Nhor", &prefix_opt::Nhor)
         .def_readonly("MaxGradIter", &prefix_opt::MaxGradIter)
@@ -519,7 +519,7 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("ConvergenceGradientRelTol", &prefix_opt::ConvergenceGradientRelTol);
 
     typedef GrampcBinding::grampc_sol prefix_sol;
-    pybind11::class_<GrampcBinding::grampc_sol>(binding, "grampc_sol")
+    pybind11::class_<GrampcBinding::grampc_sol>(binding, "_grampc_sol")
         .def(pybind11::init<>())
         .def_readonly("xnext", &prefix_sol::xnext)
         .def_readonly("unext", &prefix_sol::unext)
@@ -532,7 +532,7 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("status", &prefix_sol::status);
 
     typedef GrampcBinding::grampc_rws prefix_rws;
-    pybind11::class_<GrampcBinding::grampc_rws>(binding, "grampc_rws")
+    pybind11::class_<GrampcBinding::grampc_rws>(binding, "_grampc_rws")
         .def(pybind11::init<>())
         .def_readonly("t", &prefix_rws::t)
         .def_readonly("tls", &prefix_rws::tls)
