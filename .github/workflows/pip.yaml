@@ -28,7 +28,6 @@ jobs:
         pip install .
     
     - name: Run example
-      run:
-        cd examples/DoubleIntegrator/
-        python DoubleIntegrator.py
+      working-directory: examples/DoubleIntegrator/
+      run: python DoubleIntegrator.py
 
