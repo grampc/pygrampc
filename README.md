@@ -1,8 +1,8 @@
 # PyGRAMPC
 
-PyGRAMPC is a Python interface for the GRAMPC solver build by pybind11. It features at least the 
-same functionality as the Matlab interface. For questions regarding GRAMPC refer to the [grampc](https://github.com/grampc/grampc)
-repository.
+PyGRAMPC is a Python interface for the GRAMPC solver build by pybind11. 
+It features the same functionality as the Matlab interface. 
+For questions regarding GRAMPC please refer to the [grampc](https://github.com/grampc/grampc) repository.
 
 ## Features 
 
@@ -83,7 +83,9 @@ As in the Python interface, you only have to override the functions you need.
 Using the C++ problem description can result in a 100 times speedup per time step.
 
 For an example, please refer to the `Crane2D` example. 
-There exists a Python and C++ problem description, which showcases the achieved speedup.
+To invoke the compilation process please install `scikit-build-core` and `pybind11` via pip.
+Then run `build_problem.py` inside the `Crane2D` folder.
+There exists both a Python and C++ problem description, which showcases the achieved speedup.
 
 #### Debugging 
 Debugging the C++ is more complicated than Python debugging. First, the toolbox needs to be compiled with Debug symbols. This can be achieved with
