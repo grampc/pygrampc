@@ -1,6 +1,6 @@
 import json
 from math import nan, inf
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -83,14 +83,16 @@ class Grampc(GrampcBinding):
         "ConstraintsHandling": ValidatorOptions(("auglag", "extpen"), "Enum"),
         "ConvergenceCheck": ValidatorOptions(("on", "off"), "Enum")}
 
-    def __init__(self, problem: ProblemBase, options_path: str = None, plot_prediction=False):
+    def __init__(self, problem: ProblemBase, 
+                       options_path: Optional[str] = None, 
+                       plot_prediction: Optional[bool] = False):
         """
         Initilizes the interface and the underlying GRAMPC object.
 
         Args:
             problem: The concrete problem description object.
-            options_path (str): The path to the options.json file.
-            plot_prediction (bool): If True enables the prediction plot utility. 
+            options_path (str): The path to the options.json file. Optional.
+            plot_prediction (bool): If True enables the prediction plot utility. Optional
         """
         super().__init__(problem)
         self._parameters_real_vec = {
@@ -212,7 +214,6 @@ class Grampc(GrampcBinding):
             parameters (dict): Mapping with parameter name and values.
         
         Raises: 
-            ValueError: if the dimensions of vector values like the states or controls don't match the problem description
             KeyError: if a parameter key is not a valid GRAMPC parameter
         """
         for key, value in parameters.items():
@@ -233,7 +234,6 @@ class Grampc(GrampcBinding):
             options (dict): Mapping with parameter name and values.
         
         Raises: 
-            ValueError: if the dimensions of vector values like the states or controls don't match the problem description
             KeyError: if a parameter key is not a valid GRAMPC parameter
         """
         for key, value in options.items():
@@ -342,7 +342,21 @@ class GrampcResults:
             self.gT = grampc.param.NgT + self.h
             self.hT = grampc.param.NhT + self.gT
 
-    def __init__(self, grampc: Grampc, Tsim: float, plot_statistics: bool = False, plot_results: bool = False):
+    def __init__(self, grampc: Grampc, 
+                       Tsim: float, 
+                       plot_statistics: Optional[bool] = False, 
+                       plot_results: Optional[bool] = False):
+        """
+        Initilizes the result data container for GRAMPC. 
+        Creates numpy arrays with length (Tsim/dt + 1) and fills them with NaN
+
+        Args:
+            grampc: Reference to the GRAMPC interface.
+            Tsim (float): End time of your simulation.
+            plot_statistics (bool): If True enables the statistics plot utility. Optional
+            plot_results (bool): If True enables the results plot utility. Optional
+        """
+
         num_data_points = int(Tsim / grampc.param.dt) + 1
         self._id = self.index(grampc)
         self.t = np.linspace(grampc.param.t0, Tsim, num_data_points)
@@ -377,6 +391,14 @@ class GrampcResults:
             self.fig_results = None
 
     def update(self, grampc: Grampc, index: int):
+        """
+        Inserts the current datapoints into the numpy arrays.
+        Evaluates the constraint functions of GRAMPC.
+        
+        Args:
+            grampc: Reference to the GRAMPC interface.
+            index (int): Current time index. 
+        """
         self.x[index, :] = grampc.rws.x[:, 0] * grampc.opt.xScale + grampc.opt.xOffset
         self.u[index, :] = grampc.rws.u[:, 0] * grampc.opt.uScale + grampc.opt.uOffset
         self.adj[index, :] = grampc.rws.adj[:, 0] / grampc.opt.xScale
@@ -404,6 +426,9 @@ class GrampcResults:
             self.penT[index, :] = grampc.rws.pen[self._id.h:self._id.gT, -1]
 
     def plot(self):
+        """
+        Utility function to plot the statistics and results stored in this class.
+        """
         if self.fig_statistics is not None:
             plt.figure(self.fig_statistics.number)
             self.fig_statistics.clf()
