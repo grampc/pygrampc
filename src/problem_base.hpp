@@ -85,11 +85,11 @@ class PYBIND11_EXPORT ProblemBase
 
 		/** Inequality constraints h(t,x,u,p) < 0 */
 		virtual void hfct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) {}
-		/** Jacobian dh/dx multiplied by vector vec, i.e. (dh/dx)^T*vec or vec^T*(dg/dx) **/
+		/** Jacobian dh/dx multiplied by vector vec, i.e. (dh/dx)^T*vec or vec^T*(dh/dx) **/
 		virtual void dhdx_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {}
-		/** Jacobian dh/du multiplied by vector vec, i.e. (dh/du)^T*vec or vec^T*(dg/du) **/
+		/** Jacobian dh/du multiplied by vector vec, i.e. (dh/du)^T*vec or vec^T*(dh/du) **/
 		virtual void dhdu_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {}
-		/** Jacobian dh/dp multiplied by vector vec, i.e. (dh/dp)^T*vec or vec^T*(dg/dp) **/
+		/** Jacobian dh/dp multiplied by vector vec, i.e. (dh/dp)^T*vec or vec^T*(dh/dp) **/
 		virtual void dhdp_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {}
 
 
