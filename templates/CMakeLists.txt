@@ -8,7 +8,7 @@ include_directories(
     include(
         ../../eigen/
         ../../src/
-        ../../src/GRAMPC/include
+        ../../grampc/include
     )
 )
 
