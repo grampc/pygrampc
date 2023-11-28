@@ -82,8 +82,7 @@ if __name__ == "__main__":
 
     Q = np.array([1.0, 2.0, 2.0, 1.0, 1.0, 4.0])
     R = np.array([0.05, 0.05])
-    Param = [0.2, 1.25, 0.3]
-    problem = Crane2D(Q, R, Param)
+    problem = Crane2D(Q, R, 0.2, 1.25, 0.3)
 
     # initialize grampc object
     grampc = mpc.Grampc(problem, path)
