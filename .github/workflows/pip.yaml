@@ -1,6 +1,6 @@
 name: Python package
 
-on: [push]
+on: workflow_dispatch
 
 jobs:
   build:
@@ -12,7 +12,11 @@ jobs:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout and init submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+        
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
