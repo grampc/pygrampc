@@ -49,7 +49,7 @@ class Grampc(GrampcBinding):
         "TOffset": ValidatorOptions((-inf, inf), "OpenInterval"),
         "JScale": ValidatorOptions((0.0, inf), "OpenInterval"),
         "MultiplierMax": ValidatorOptions((0.0, inf), "OpenInterval"),
-        "MultiplierDampingFactor": ((0.0, 1.0), "ClosedInterval"),
+        "MultiplierDampingFactor": ValidatorOptions((0.0, 1.0), "ClosedInterval"),
         "PenaltyMax": ValidatorOptions((0.0, inf), "OpenInterval"),
         "PenaltyMin": ValidatorOptions((0.0, inf), "OpenInterval"),
         "PenaltyIncreaseFactor": ValidatorOptions((1.0, inf), "LeftClosedInterval"),
