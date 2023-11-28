@@ -29,5 +29,6 @@ jobs:
     
     - name: Run example
       run:
-        python examples/DoubleIntegrator/DoubleIntegrator.py
+        cd examples/DoubleIntegrator/
+        python DoubleIntegrator.py
 
