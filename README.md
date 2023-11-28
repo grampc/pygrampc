@@ -90,7 +90,7 @@ There exists both a Python and C++ problem description, which showcases the achi
 #### Debugging 
 Debugging the C++ is more complicated than Python debugging. First, the toolbox needs to be compiled with Debug symbols. This can be achieved with
 ```
-pip install --config-settings=cmake.build-type="DEBUG" "path to interface"
+pip install "path to interface" --config-settings=cmake.build-type="DEBUG"
 ```
 Then compile your C++ problem description in debug mode and use a suitable debugger. 
 Using the `Python C++ Debugger` extensions for VS Code is a reliable way to debug Python an C++ code.
