@@ -1,6 +1,6 @@
 name: Python package
 
-on: [push]
+on: workflow_dispatch
 
 jobs:
   build:
@@ -8,11 +8,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        os: [windows-latest]
+        python-version: ["3.11"]
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout and init submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+        
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -24,6 +28,6 @@ jobs:
         pip install .
     
     - name: Run example
-      run:
-        python examples/DoubleIntegrator/DoubleIntegrator.py
+      working-directory: examples/DoubleIntegrator/
+      run: python DoubleIntegrator.py
 
