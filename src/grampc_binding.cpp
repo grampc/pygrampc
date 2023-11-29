@@ -395,7 +395,7 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("sol", &GrampcBinding::sol)
         .def_readonly("rws", &GrampcBinding::rws)
         .def_readwrite("problem", &GrampcBinding::problem_binding)
-        .def("run", &GrampcBinding::run, "Calls grampc_run and measures the wall clock time in milliseconds")
+        .def("run", &GrampcBinding::run)
         .def("_set_param_real", &GrampcBinding::set_param_real)
         .def("_set_param_real_vec", &GrampcBinding::set_param_real_vec)
         .def("_set_opt_str", &GrampcBinding::set_opt_str)
@@ -403,9 +403,9 @@ PYBIND11_MODULE(_core, m)
         .def("_set_opt_int_vec", &GrampcBinding::set_opt_int_vec)
         .def("_set_opt_real", &GrampcBinding::set_opt_real)
         .def("_set_opt_real_vec", &GrampcBinding::set_opt_real_vec)
-        .def("print_opts", &GrampcBinding::print_opts, "Prints the options of the underlying grampc_opt struct")
-        .def("print_params", &GrampcBinding::print_params, "Prints the parameters of the underlying grampc_param struct")
-        .def("print_status", &GrampcBinding::print_status, "Prints the status of grampc")
+        .def("print_opts", &GrampcBinding::print_opts)
+        .def("print_params", &GrampcBinding::print_params)
+        .def("print_status", &GrampcBinding::print_status)
 
         .def("ffct", &GrampcBinding::ffct)
         .def("lfct", &GrampcBinding::lfct)
@@ -414,11 +414,7 @@ PYBIND11_MODULE(_core, m)
         .def("hfct", &GrampcBinding::hfct)
         .def("gTfct", &GrampcBinding::gTfct)
         .def("hTfct", &GrampcBinding::hTfct)
-        .def("estim_penmin", &GrampcBinding::estim_penmin, R"pbdoc(
-            Estimates the minimal penalty parameter value. 
-            Arguments: 
-            run_grampc (bool): Specifies if grampc_run() shall be called.
-        )pbdoc");
+        .def("estim_penmin", &GrampcBinding::estim_penmin);
 
     typedef GrampcBinding::grampc_param prefix_param;
     pybind11::class_<GrampcBinding::grampc_param>(binding, "_grampc_param")

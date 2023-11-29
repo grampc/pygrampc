@@ -144,8 +144,22 @@ class GrampcBinding:
 
     def __init__(self, problem: ProblemBase) -> None: ...
 
-    def run(self) -> float: ...
-    def estim_penmin(self, run_grampc: bool) -> None: ...
+    def run(self) -> float:
+        """
+        Calls grampc_run which executes one MPC step. Updates the values inside rws and sol.
+
+        Returns:
+            float: CPU wall clock time of one function call in milliseconds.
+        """
+        pass
+    def estim_penmin(self, run_grampc: bool) -> None:
+        """
+        Estimates the minimal penalty parameter value. 
+        
+        Args: 
+            run_grampc (bool): Specifies if grampc_run() shall be called.
+        """
+        pass
 
     def ffct(self, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> np.ndarray: ...
     def lfct(self, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> float: ...
@@ -156,9 +170,21 @@ class GrampcBinding:
     def hTfct(self, T: float, x: np.ndarray, p: np.ndarray) -> np.ndarray: ...
     def hfct(self, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> np.ndarray: ...
 
-    def print_opts(self) -> None: ...
-    def print_params(self) -> None: ...
-    def print_status(self) -> None: ...
+    def print_opts(self) -> None:
+        """
+        Prints the options of the underlying grampc_opt struct.
+        """
+        pass
+    def print_params(self) -> None:
+        """
+        Prints the parameters of the underlying grampc_param struct.
+        """
+        pass
+    def print_status(self) -> None:
+        """
+        Prints the current status of grampc.
+        """
+        pass
 
 class ProblemBase:
     Ng: int
