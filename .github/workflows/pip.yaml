@@ -8,12 +8,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest]
         python-version: ["3.11"]
 
     steps:
     - name: Checkout and init submodules
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: recursive
         
@@ -27,7 +27,7 @@ jobs:
         pip install numpy matplotlib scipy
         pip install .
     
-    - name: Run example
-      working-directory: examples/DoubleIntegrator/
-      run: python DoubleIntegrator.py
+    - name: Run test
+      working-directory: tests
+      run: python test_pygrampc.py
 
