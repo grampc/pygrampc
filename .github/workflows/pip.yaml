@@ -28,6 +28,4 @@ jobs:
         pip install .
     
     - name: Run test
-      working-directory: tests
-      run: python test_pygrampc.py
-
+      run: pytest tests
