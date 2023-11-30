@@ -256,6 +256,16 @@ GrampcBinding::~GrampcBinding()
 
 typeRNum GrampcBinding::run()
 {
+    // check if dt and Thor are valid. This redundancy is necessary to throw an error for Python
+    if (*param.dt <= 0.0)
+    {
+        throw std::exception("Sampling time dt is not valid. Must be greater than zero");
+    } 
+    else if (*param.Thor < *param.dt)
+    {
+        throw std::exception("Horizon Thor is not valid. Must be greater than sampling time");
+    }
+
     auto begin = std::chrono::high_resolution_clock::now();
     grampc_run(grampc_);
     auto end = std::chrono::high_resolution_clock::now();
@@ -265,6 +275,16 @@ typeRNum GrampcBinding::run()
 
 void GrampcBinding::estim_penmin(bool run_grampc)
 {
+    // check if dt and Thor are valid. This redundancy is necessary to throw an error for Python
+    if (*param.dt <= 0.0 && run_grampc)
+    {
+        throw std::exception("Sampling time dt is not valid. Must be greater than zero");
+    } 
+    else if (*param.Thor < *param.dt && run_grampc)
+    {
+        throw std::exception("Horizon Thor is not valid. Must be greater than sampling time");
+    }
+
     grampc_estim_penmin(grampc_, run_grampc);
 }
 

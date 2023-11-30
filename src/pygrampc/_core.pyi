@@ -150,6 +150,9 @@ class GrampcBinding:
 
         Returns:
             float: CPU wall clock time of one function call in milliseconds.
+
+        Raises:
+            RuntimeError: if dt or Thor don't have valid values
         """
         pass
     def estim_penmin(self, run_grampc: bool) -> None:
@@ -158,6 +161,9 @@ class GrampcBinding:
         
         Args: 
             run_grampc (bool): Specifies if grampc_run() shall be called.
+        
+        Raises:
+            RuntimeError: if dt or Thor don't have valid values
         """
         pass
 
@@ -182,7 +188,7 @@ class GrampcBinding:
         pass
     def print_status(self) -> None:
         """
-        Prints the current status of grampc.
+        Prints the current status of GRAMPC.
         """
         pass
 
