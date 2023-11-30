@@ -68,7 +68,7 @@ class GrampcBinding
     };
     
     /* OPTIONS STRUCTURE ******************************************************/
-    // Options for grampc computations, which are part of the grampc data struct.
+    // Options for GRAMPC computations, which are part of the GRAMPC data struct.
     struct grampc_opt
     {
     public:
@@ -142,7 +142,7 @@ class GrampcBinding
     };
 
     /* SOLUTION STRUCTURE ******************************************************/
-    // Solution structure of grampc computations, which is part of the grampc data struct.
+    // Solution structure of GRAMPC computations, which is part of the GRAMPC data struct.
     struct grampc_sol
     {
     public:
@@ -161,7 +161,7 @@ class GrampcBinding
     };
 
     /* RWS STRUCTURE **********************************************************/
-    // Real workspace structure of grampc that holds intermediate results
+    // Real workspace structure of GRAMPC that holds intermediate results
     // and computation results.
     struct grampc_rws
     {
@@ -226,7 +226,7 @@ class GrampcBinding
         ProblemBase* problem_binding;
 
     public:
-        // Create python interface to the GRAMPC solver for problem description
+        // Create Python interface to the GRAMPC solver for problem description
         GrampcBinding(ProblemBase* problem);
         ~GrampcBinding();
 

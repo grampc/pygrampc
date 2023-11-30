@@ -13,10 +13,6 @@ class MyProblem(ProblemBase):
         self.NhT = 0
 
     def ffct(self, out, t, x, u, p):
-        """
-        :param out: only modify with element access like out[:] or out[0]!
-        :param t, x, u, p: immutable arrays on C++ side, do not modify!
-        """
         pass
 
     def dfdx_vec(self, out, t, x, vec, u, p):

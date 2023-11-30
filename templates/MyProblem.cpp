@@ -16,6 +16,7 @@
 MyProblem::MyProblem()
  : ProblemBase()
 {
+    // Overwrite these parameters defined by ProblemBase
     Nx_ = 2;
     Nu_ = 1;
     Np_ = 0;
@@ -125,7 +126,7 @@ PYBIND11_MODULE(my_problem, m)
         .def_readonly("NgT", &MyProblem::NgT_)
         .def_readonly("NhT", &MyProblem::NhT_)
 
-    // these functions are not needed for the Grampc interface, but provide an interface for python code
+    // these functions are not needed for the GRAMPC interface, but provide an interface for python code
         .def("ffct", &MyProblem::ffct)
         .def("dfdx_vec", &MyProblem::dfdx_vec)
         .def("dfdu_vec", &MyProblem::dfdu_vec)

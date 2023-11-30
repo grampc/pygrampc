@@ -131,7 +131,7 @@ class PYBIND11_EXPORT ProblemBase
 };
 
 /*Template class needed for overriting C++ functions in python*/
-class PyProblem : public ProblemBase //PyProblem? 
+class PyProblem : public ProblemBase
 {
     public:
         /* Inherit the constructor*/

@@ -11,8 +11,6 @@
 #include "Crane2D.hpp"
 #include <cmath>
 
-// insert your problem description here
-
 Crane2D::Crane2D(Vector Q, Vector R, typeRNum ScaleConstraint, typeRNum MaxConstraintHeight, typeRNum MaxAngularDeflection)
  : ProblemBase()
 {
@@ -145,7 +143,7 @@ PYBIND11_MODULE(crane_problem, m)
         .def_readwrite("ScaleConstraint", &Crane2D::ScaleConstraint)
         .def_readwrite("MaxConstraintHeight", &Crane2D::MaxConstraintHeight)
 
-    // these functions are not needed for the Grampc interface, but provide an interface for python code
+    // these functions are not needed for the GRAMPC interface, but provide an interface for python code
         .def("ffct", &Crane2D::ffct)
         .def("dfdx_vec", &Crane2D::dfdx_vec)
         .def("dfdu_vec", &Crane2D::dfdu_vec)

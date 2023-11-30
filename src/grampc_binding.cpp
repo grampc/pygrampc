@@ -93,6 +93,9 @@ void GrampcBinding::grampc_opt::reMapMemory(const typeGRAMPC *grampc)
     OptimTimeLineSearchFactor = &grampc->opt->OptimTimeLineSearchFactor;
 
     ScaleProblem = &grampc->opt->ScaleProblem;
+    
+    // placement new uses the preallocated memory of the Eigen::Map types on the stack, so no delete has to be called
+    // this is the way to go according to the Eigen documentation: https://eigen.tuxfamily.org/dox/classEigen_1_1Map.html
     new (&xScale) Eigen::Map<Vector>(grampc->opt->xScale, grampc->param->Nx);
     new (&xOffset) Eigen::Map<Vector>(grampc->opt->xOffset, grampc->param->Nx);
     new (&uScale) Eigen::Map<Vector>(grampc->opt->uScale, grampc->param->Nu);
@@ -132,6 +135,8 @@ GrampcBinding::grampc_sol::grampc_sol()
 
 void GrampcBinding::grampc_sol::reMapMemory(const typeGRAMPC *grampc)
 {
+    // placement new uses the preallocated memory of the Eigen::Map types on the stack, so no delete has to be called
+    // this is the way to go according to the Eigen documentation: https://eigen.tuxfamily.org/dox/classEigen_1_1Map.html
     new (&xnext) Eigen::Map<Vector>(grampc->sol->xnext, grampc->param->Nx);
     new (&unext) Eigen::Map<Vector>(grampc->sol->unext, grampc->param->Nu);
     new (&pnext) Eigen::Map<Vector>(grampc->sol->pnext, grampc->param->Np);
@@ -155,6 +160,9 @@ GrampcBinding::grampc_rws::grampc_rws()
 
 void GrampcBinding::grampc_rws::reMapMemory(const typeGRAMPC *grampc)
 {
+    // placement new uses the preallocated memory of the Eigen::Map types on the stack, so no delete has to be called
+    // this is the way to go according to the Eigen documentation: https://eigen.tuxfamily.org/dox/classEigen_1_1Map.html
+
     // dim = Nhor;
     new (&t) Eigen::Map<Vector>(grampc->rws->t, grampc->opt->Nhor);
     new (&tls) Eigen::Map<Vector>(grampc->rws->tls, grampc->opt->Nhor);
