@@ -20,6 +20,7 @@ extern "C"
 #include <string>
 #include <vector>
 #include <chrono>
+#include <stdexcept>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
