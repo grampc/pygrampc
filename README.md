@@ -48,7 +48,7 @@ class MyProblem(ProblemBase):
         self.NhT = 0
         ...
 ```
-When writing your problem description in Python, only `__init__()`, `ffct()` and `dfdx()` are mandatory to implement. 
+When writing your problem description in Python, only `__init__()`, `ffct()` and `dfdx_vec()` are mandatory to implement. 
 If you are unsure about the function arguments, please refer to `MyProblem.py`.
 
 #### Usage
@@ -93,4 +93,4 @@ Debugging the C++ is more complicated than Python debugging. First, the toolbox 
 pip install "path to interface" --config-settings=cmake.build-type="DEBUG"
 ```
 Then compile your C++ problem description in debug mode and use a suitable debugger. 
-Using the `Python C++ Debugger` extensions for VS Code is a reliable way to debug Python an C++ code.
+Using the `Python C++ Debugger` extensions for VS Code is a reliable way to debug Python and C++ code.
