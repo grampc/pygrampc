@@ -214,7 +214,9 @@ class Grampc(GrampcBinding):
             parameters (dict): Mapping with parameter name and values.
         
         Raises: 
-            KeyError: if a parameter key is not a valid GRAMPC parameter
+            KeyError: if a parameter key is not a valid GRAMPC parameter.
+            ValueError: Raised if value is not valid.
+            ValueError: Raised if dimension does not match.
         """
         for key, value in parameters.items():
             if key in self._parameters_real:
@@ -234,7 +236,9 @@ class Grampc(GrampcBinding):
             options (dict): Mapping with parameter name and values.
         
         Raises: 
-            KeyError: if a parameter key is not a valid GRAMPC parameter
+            KeyError: if a parameter key is not a valid GRAMPC parameter.
+            ValueError: Raised if value is not valid.
+            ValueError: Raised if dimension does not match.
         """
         for key, value in options.items():
             if key in self._options_str:
