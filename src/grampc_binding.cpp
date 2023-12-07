@@ -151,8 +151,8 @@ void GrampcBinding::grampc_sol::reMapMemory(const typeGRAMPC *grampc)
 // Eigen::Map needs to be explicitly constructed
 GrampcBinding::grampc_rws::grampc_rws()
     : t(NULL, 0), tls(NULL, 0), x(NULL, 0, 0), adj(NULL, 0, 0), dcdx(NULL, 0, 0), u(NULL, 0, 0), uls(NULL, 0, 0), 
-      uprev(NULL, 0, 0), gradu(NULL, 0, 0), graduprev(NULL, 0, 0), dcdu(NULL, 0, 0), p(NULL, 0, 0), pls(NULL, 0, 0), 
-      pprev(NULL, 0, 0), gradp(NULL, 0, 0), gradpprev(NULL, 0, 0), dcdp(NULL, 0, 0), mult(NULL, 0, 0), pen(NULL, 0, 0), 
+      uprev(NULL, 0, 0), gradu(NULL, 0, 0), graduprev(NULL, 0, 0), dcdu(NULL, 0, 0), p(NULL, 0), pls(NULL, 0), 
+      pprev(NULL, 0), gradp(NULL, 0), gradpprev(NULL, 0), dcdp(NULL, 0, 0), mult(NULL, 0, 0), pen(NULL, 0, 0), 
       cfct(NULL, 0, 0), cfctprev(NULL, 0, 0), cfctAbsTol(NULL, 0), lsAdapt(NULL, 0), lsExplicit(NULL, 0), 
       rwsScale(NULL, 0), rwsGeneral(NULL, 0), rparRodas(NULL, 0), workRodas(NULL, 0)
 {
@@ -180,12 +180,13 @@ void GrampcBinding::grampc_rws::reMapMemory(const typeGRAMPC *grampc)
     new (&graduprev) Eigen::Map<Matrix>(grampc->rws->graduprev, grampc->param->Nu, grampc->opt->Nhor);
     new (&dcdu) Eigen::Map<Matrix>(grampc->rws->dcdu, grampc->param->Nu, grampc->opt->Nhor);
 
-    // dim = Np x Nhor
-    new (&p) Eigen::Map<Matrix>(grampc->rws->p, grampc->param->Np, grampc->opt->Nhor);
-    new (&pls) Eigen::Map<Matrix>(grampc->rws->pls, grampc->param->Np, grampc->opt->Nhor);
-    new (&pprev) Eigen::Map<Matrix>(grampc->rws->pprev, grampc->param->Np, grampc->opt->Nhor);
-    new (&gradp) Eigen::Map<Matrix>(grampc->rws->gradp, grampc->param->Np, grampc->opt->Nhor);
-    new (&gradpprev) Eigen::Map<Matrix>(grampc->rws->gradpprev, grampc->param->Np, grampc->opt->Nhor);
+    // dim = Np
+    new (&p) Eigen::Map<Vector>(grampc->rws->p, grampc->param->Np);
+    new (&pls) Eigen::Map<Vector>(grampc->rws->pls, grampc->param->Np);
+    new (&pprev) Eigen::Map<Vector>(grampc->rws->pprev, grampc->param->Np);
+    new (&gradp) Eigen::Map<Vector>(grampc->rws->gradp, grampc->param->Np);
+    new (&gradpprev) Eigen::Map<Vector>(grampc->rws->gradpprev, grampc->param->Np);
+    // dim = Np x (Nhor + 1)
     new (&dcdp) Eigen::Map<Matrix>(grampc->rws->dcdp, grampc->param->Np, grampc->opt->Nhor + 1);
 
     // dim = 1
@@ -342,8 +343,7 @@ void GrampcBinding::set_param_real(const std::string &key, typeRNum value)
     grampc_setparam_real(grampc_, key.c_str(), value);
 }
 
-void GrampcBinding::set_param_real_vec(const std::string &key,
-                               const std::vector<typeRNum> &values)
+void GrampcBinding::set_param_real_vec(const std::string &key, const std::vector<typeRNum> &values)
 {
     grampc_setparam_real_vector(grampc_, key.c_str(), values.data());
 }
@@ -565,7 +565,7 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("adj", &prefix_rws::adj)
         .def_readonly("dcdx", &prefix_rws::dcdx)
 
-        .def_readonly("u", &prefix_rws::u)
+        .def_readonly("u", &prefix_rws::u) // needs to be accessible
         .def_readonly("uls", &prefix_rws::uls)
         .def_readonly("uprev", &prefix_rws::uprev)
         .def_readonly("gradu", &prefix_rws::gradu)
@@ -584,8 +584,8 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("gradT", &prefix_rws::gradT)
         .def_readonly("dcdt", &prefix_rws::dcdt)
 
-        .def_readonly("mult", &prefix_rws::mult)
-        .def_readonly("pen", &prefix_rws::pen)
+        .def_readonly("mult", &prefix_rws::mult) // needs to be accessible
+        .def_readonly("pen", &prefix_rws::pen) // needs to be accessible
         .def_readonly("cfct", &prefix_rws::cfct)
         .def_readonly("cfctprev", &prefix_rws::cfctprev)
         .def_readonly("cfctAbsTol", &prefix_rws::cfctAbsTol)

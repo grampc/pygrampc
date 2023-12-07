@@ -184,11 +184,11 @@ class GrampcBinding
         Eigen::Map<Matrix> graduprev;
         Eigen::Map<Matrix> dcdu;
 
-        Eigen::Map<Matrix> p;
-        Eigen::Map<Matrix> pls;
-        Eigen::Map<Matrix> pprev;
-        Eigen::Map<Matrix> gradp;
-        Eigen::Map<Matrix> gradpprev;
+        Eigen::Map<Vector> p;
+        Eigen::Map<Vector> pls;
+        Eigen::Map<Vector> pprev;
+        Eigen::Map<Vector> gradp;
+        Eigen::Map<Vector> gradpprev;
         Eigen::Map<Matrix> dcdp;
 
         typeRNum* T;
