@@ -612,7 +612,7 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("adj", &prefix_rws::adj)
         .def_readonly("dcdx", &prefix_rws::dcdx)
 
-        .def_readonly("u", &prefix_rws::u) // needs to be accessible
+        .def_readonly("u", &prefix_rws::u)
         .def_readonly("uls", &prefix_rws::uls)
         .def_readonly("uprev", &prefix_rws::uprev)
         .def_readonly("gradu", &prefix_rws::gradu)
@@ -631,8 +631,8 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("gradT", &prefix_rws::gradT)
         .def_readonly("dcdt", &prefix_rws::dcdt)
 
-        .def_readonly("mult", &prefix_rws::mult) // needs to be accessible
-        .def_readonly("pen", &prefix_rws::pen) // needs to be accessible
+        .def_readonly("mult", &prefix_rws::mult)
+        .def_readonly("pen", &prefix_rws::pen)
         .def_readonly("cfct", &prefix_rws::cfct)
         .def_readonly("cfctprev", &prefix_rws::cfctprev)
         .def_readonly("cfctAbsTol", &prefix_rws::cfctAbsTol)
