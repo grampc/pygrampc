@@ -17,13 +17,13 @@ MyProblem::MyProblem()
  : ProblemBase()
 {
     // Overwrite these parameters defined by ProblemBase
-    Nx_ = 2;
-    Nu_ = 1;
-    Np_ = 0;
-    Ng_ = 0;
-    Nh_ = 0;
-    NgT_ = 2;
-    NhT_ = 0;
+    Nx = 2;
+    Nu = 1;
+    Np = 0;
+    Ng = 0;
+    Nh = 0;
+    NgT = 2;
+    NhT = 0;
 }
 
 /** System function f(t,x,u,p)

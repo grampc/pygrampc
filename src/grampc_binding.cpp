@@ -291,7 +291,7 @@ void GrampcBinding::estim_penmin(bool run_grampc)
 
 Vector GrampcBinding::ffct(typeRNum t, Vector x, Vector u, Vector p)
 {
-    Vector out(problem_binding->Nx_);
+    Vector out(problem_binding->Nx);
     problem_binding->ffct(out, t, x, u, p);
     return out;
 }
@@ -312,28 +312,28 @@ typeRNum GrampcBinding::Vfct(typeRNum t, Vector x, Vector p, Vector xdes)
 
 Vector GrampcBinding::gfct(typeRNum t, Vector x, Vector u, Vector p)
 {
-    Vector out(problem_binding->Ng_);
+    Vector out(problem_binding->Ng);
     problem_binding->gfct(out, t, x, u, p);
     return out;
 }
 
 Vector GrampcBinding::hfct(typeRNum t, Vector x, Vector u, Vector p)
 {
-    Vector out(problem_binding->Nh_);
+    Vector out(problem_binding->Nh);
     problem_binding->hfct(out, t, x, u, p);
     return out;
 }
 
 Vector GrampcBinding::gTfct(typeRNum t, Vector x, Vector p)
 {
-    Vector out(problem_binding->NgT_);
+    Vector out(problem_binding->NgT);
     problem_binding->gTfct(out, t, x, p);
     return out;
 }
 
 Vector GrampcBinding::hTfct(typeRNum t, Vector x, Vector p)
 {
-    Vector out(problem_binding->NhT_);
+    Vector out(problem_binding->NhT);
     problem_binding->hTfct(out, t, x, p);
     return out;
 }
@@ -370,22 +370,22 @@ void GrampcBinding::set_opt_int(const std::string &key, int value)
 void GrampcBinding::set_opt_int_vec(const std::string &key, const std::vector<int> &values)
 {
     grampc_setopt_int_vector(grampc_, key.c_str(), values.data());
-    if (values[4] < problem_binding->Nx_) // Check for MLJAC, if a banded structure is used
+    if (values[4] < problem_binding->Nx) // Check for MLJAC, if a banded structure is used
     {
-        problem_binding->Rodas_Jac = problem_binding->Nx_ * (values[4] + values[5] + 1); // Nx * (MLJAC + MUJAC + 1)
+        problem_binding->Rodas_Jac = problem_binding->Nx * (values[4] + values[5] + 1); // Nx * (MLJAC + MUJAC + 1)
     }
-    else if (values[4] == problem_binding->Nx_)
+    else if (values[4] == problem_binding->Nx)
     {
-        problem_binding->Rodas_Jac = problem_binding->Nx_ * problem_binding->Nx_;
+        problem_binding->Rodas_Jac = problem_binding->Nx * problem_binding->Nx;
     }
 
-    if (values[6] < problem_binding->Nx_) // Check for MLMAS, if a banded structure is used
+    if (values[6] < problem_binding->Nx) // Check for MLMAS, if a banded structure is used
     {
-        problem_binding->Rodas_M = problem_binding->Nx_ * (values[6] + values[7] + 1); // Nx * (MLMAS + MUMAS + 1)
+        problem_binding->Rodas_M = problem_binding->Nx * (values[6] + values[7] + 1); // Nx * (MLMAS + MUMAS + 1)
     }
-    else if (values[6] == problem_binding->Nx_)
+    else if (values[6] == problem_binding->Nx)
     {
-        problem_binding->Rodas_M = problem_binding->Nx_ * problem_binding->Nx_;
+        problem_binding->Rodas_M = problem_binding->Nx * problem_binding->Nx;
     }
 }
 
@@ -652,13 +652,13 @@ PYBIND11_MODULE(_core, m)
 
     pybind11::class_<ProblemBase, PyProblem>(m, "ProblemBase")
         .def(pybind11::init<>())
-        .def_readwrite("Nx", &ProblemBase::Nx_)
-        .def_readwrite("Nu", &ProblemBase::Nu_)
-        .def_readwrite("Np", &ProblemBase::Np_)
-        .def_readwrite("Ng", &ProblemBase::Ng_)
-        .def_readwrite("Nh", &ProblemBase::Nh_)
-        .def_readwrite("NgT", &ProblemBase::NgT_)
-        .def_readwrite("NhT", &ProblemBase::NhT_)
+        .def_readwrite("Nx", &ProblemBase::Nx)
+        .def_readwrite("Nu", &ProblemBase::Nu)
+        .def_readwrite("Np", &ProblemBase::Np)
+        .def_readwrite("Ng", &ProblemBase::Ng)
+        .def_readwrite("Nh", &ProblemBase::Nh)
+        .def_readwrite("NgT", &ProblemBase::NgT)
+        .def_readwrite("NhT", &ProblemBase::NhT)
 
         .def("ffct", &ProblemBase::ffct)
         .def("dfdx_vec", &ProblemBase::dfdx_vec)

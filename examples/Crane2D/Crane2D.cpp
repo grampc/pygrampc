@@ -14,13 +14,13 @@
 Crane2D::Crane2D(Vector Q, Vector R, typeRNum ScaleConstraint, typeRNum MaxConstraintHeight, typeRNum MaxAngularDeflection)
  : ProblemBase()
 {
-    Nx_ = 6;
-    Nu_ = 2;
-    Np_ = 0;
-    Ng_ = 0;
-    Nh_ = 3;
-    NgT_ = 0;
-    NhT_ = 0;
+    Nx = 6;
+    Nu = 2;
+    Np = 0;
+    Ng = 0;
+    Nh = 3;
+    NgT = 0;
+    NhT = 0;
     this->Q = Q;
     this->R = R;
     this->ScaleConstraint = ScaleConstraint;
@@ -128,13 +128,13 @@ PYBIND11_MODULE(crane_problem, m)
 {
     pybind11::class_<Crane2D, ProblemBase>(m, "Crane2D")
         .def(pybind11::init<Vector, Vector, typeRNum, typeRNum, typeRNum>())
-        .def_readonly("Nx", &Crane2D::Nx_)
-        .def_readonly("Nu", &Crane2D::Nu_)
-        .def_readonly("Np", &Crane2D::Np_)
-        .def_readonly("Ng", &Crane2D::Ng_)
-        .def_readonly("Nh", &Crane2D::Nh_)
-        .def_readonly("NgT", &Crane2D::NgT_)
-        .def_readonly("NhT", &Crane2D::NhT_)
+        .def_readonly("Nx", &Crane2D::Nx)
+        .def_readonly("Nu", &Crane2D::Nu)
+        .def_readonly("Np", &Crane2D::Np)
+        .def_readonly("Ng", &Crane2D::Ng)
+        .def_readonly("Nh", &Crane2D::Nh)
+        .def_readonly("NgT", &Crane2D::NgT)
+        .def_readonly("NhT", &Crane2D::NhT)
         
         // make your custom fields available from python
         .def_readwrite("Q", &Crane2D::Q)

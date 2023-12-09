@@ -27,13 +27,13 @@ typedef Eigen::Ref<const Vector> cVectorRef;
 class PYBIND11_EXPORT ProblemBase
 {
     public:
-        typeInt Nx_;
-        typeInt Nu_;
-        typeInt Np_;
-        typeInt Ng_;
-        typeInt Nh_;
-        typeInt NgT_;
-        typeInt NhT_;
+        typeInt Nx;
+        typeInt Nu;
+        typeInt Np;
+        typeInt Ng;
+        typeInt Nh;
+        typeInt NgT;
+        typeInt NhT;
         typeInt Rodas_Jac = 0;
         typeInt Rodas_M = 0;
 
