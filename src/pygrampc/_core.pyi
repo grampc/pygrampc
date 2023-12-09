@@ -167,6 +167,39 @@ class GrampcBinding:
         """
         pass
 
+    def set_rws_u(self, u_new: np.ndarray) -> None:
+        """
+        Sets the data in rws.u with u_new
+
+        Args:
+            u_new (np.ndarray): New data.
+
+        Raises:
+            ValueError: if the dimensions of u_new don't match rws.u
+        """
+
+    def set_rws_multiplier(self, multiplier_new: np.ndarray) -> None:
+        """
+        Sets the data in rws.mult with multiplier_new
+
+        Args:
+            multiplier_new (np.ndarray): New data.
+
+        Raises:
+            ValueError: if the dimensions of multiplier_new don't match rws.mult
+        """
+
+    def set_rws_penalty(self, penalty_new: np.ndarray) -> None:
+        """
+        Sets the data in rws.pen with penalty_new
+
+        Args:
+            penalty_new (np.ndarray): New data.
+
+        Raises:
+            ValueError: if the dimensions of penalty_new don't match rws.pen
+        """
+
     def ffct(self, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> np.ndarray: ...
     def lfct(self, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> float: ...
     def Vfct(self, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> float: ...

@@ -17,7 +17,7 @@ GrampcBinding::grampc_param::grampc_param()
 {
 }
 
-void GrampcBinding::grampc_param::reMapMemory(const typeGRAMPC *grampc)
+void GrampcBinding::grampc_param::remap_memory(const typeGRAMPC *grampc)
 {
     Nx = &grampc->param->Nx;
     Nu = &grampc->param->Nu;
@@ -57,7 +57,7 @@ GrampcBinding::grampc_opt::grampc_opt()
 {
 }
 
-void GrampcBinding::grampc_opt::reMapMemory(const typeGRAMPC *grampc)
+void GrampcBinding::grampc_opt::remap_memory(const typeGRAMPC *grampc)
 {
     Nhor = &grampc->opt->Nhor;
     MaxGradIter = &grampc->opt->MaxGradIter;
@@ -133,7 +133,7 @@ GrampcBinding::grampc_sol::grampc_sol()
 {
 }
 
-void GrampcBinding::grampc_sol::reMapMemory(const typeGRAMPC *grampc)
+void GrampcBinding::grampc_sol::remap_memory(const typeGRAMPC *grampc)
 {
     // placement new uses the preallocated memory of the Eigen::Map types on the stack, so no delete has to be called
     // this is the way to go according to the Eigen documentation: https://eigen.tuxfamily.org/dox/classEigen_1_1Map.html
@@ -158,7 +158,7 @@ GrampcBinding::grampc_rws::grampc_rws()
 {
 }
 
-void GrampcBinding::grampc_rws::reMapMemory(const typeGRAMPC *grampc)
+void GrampcBinding::grampc_rws::remap_memory(const typeGRAMPC *grampc)
 {
     // placement new uses the preallocated memory of the Eigen::Map types on the stack, so no delete has to be called
     // this is the way to go according to the Eigen documentation: https://eigen.tuxfamily.org/dox/classEigen_1_1Map.html
@@ -244,10 +244,10 @@ GrampcBinding::GrampcBinding(ProblemBase *problem)
     : problem_binding(problem)
 {
     grampc_init(&grampc_, problem_binding);
-    param.reMapMemory(grampc_);
-    opt.reMapMemory(grampc_);
-    rws.reMapMemory(grampc_);
-    sol.reMapMemory(grampc_);
+    param.remap_memory(grampc_);
+    opt.remap_memory(grampc_);
+    rws.remap_memory(grampc_);
+    sol.remap_memory(grampc_);
 }
 
 GrampcBinding::~GrampcBinding()
@@ -353,7 +353,7 @@ void GrampcBinding::set_opt_str(const std::string &key, const std::string &vstr)
     grampc_setopt_string(grampc_, key.c_str(), vstr.c_str());
     if (key == "Integrator" || key == "LineSearchType" || key == "IntegratorCost")
     {    
-        rws.reMapMemory(grampc_);
+        rws.remap_memory(grampc_);
     }
 }
 
@@ -362,8 +362,8 @@ void GrampcBinding::set_opt_int(const std::string &key, int value)
     grampc_setopt_int(grampc_, key.c_str(), value);
     if (key == "Nhor" || key == "MaxMultIter" || key == "MaxGradIter")
     {
-        rws.reMapMemory(grampc_);
-        sol.reMapMemory(grampc_);
+        rws.remap_memory(grampc_);
+        sol.remap_memory(grampc_);
     }
 }
 
@@ -399,6 +399,50 @@ void GrampcBinding::set_opt_real_vec(const std::string &key, const std::vector<t
     grampc_setopt_real_vector(grampc_, key.c_str(), values.data());
 }
 
+void GrampcBinding::fill_rws_memory(Eigen::Ref<Matrix> rws_matrix, const Eigen::Ref<const Matrix>& new_data)
+{
+    if (rws_matrix.data() == nullptr)
+    {
+        throw std::runtime_error("Memory for matrix is not allocated");
+    }
+    if (rws_matrix.rows() != new_data.rows() || rws_matrix.cols() != new_data.cols())
+    {
+        // Formats an error message which outputs the expected dimensions and the dimensions of 
+        // new_data. Results in an message like: 
+        // "Wrong dimensions detected. Expected (2, 10), got (2, 15)."
+        std::string error_message = std::string("Wrong dimensions detected. Expected (") 
+            + std::to_string(rws_matrix.rows()) + std::string(", ") + std::to_string(rws_matrix.cols()) 
+            + std::string("), got (")
+            + std::to_string(new_data.rows()) + std::string(", ") + std::to_string(new_data.cols()) 
+            + std::string(").");
+        throw std::length_error(error_message);
+    }
+
+    // copy the new data to the rws_matrix.
+    for (int col = 0; col < rws_matrix.cols(); col++)
+    {
+        for (int row = 0; row < rws_matrix.rows(); row++)
+        {
+            rws_matrix(row, col) = new_data(row, col);
+        }
+    }
+}
+
+void GrampcBinding::set_rws_u(const Eigen::Ref<const Matrix>& u_new)
+{
+    fill_rws_memory(rws.u, u_new);
+}
+
+void GrampcBinding::set_rws_multiplier(const Eigen::Ref<const Matrix>& multiplier_new)
+{
+    fill_rws_memory(rws.mult, multiplier_new);
+}
+
+void GrampcBinding::set_rws_penalty(const Eigen::Ref<const Matrix>& penalty_new)
+{
+    fill_rws_memory(rws.pen, penalty_new);
+}
+
 void GrampcBinding::print_params()
 {
     grampc_printparam(grampc_);
@@ -431,6 +475,9 @@ PYBIND11_MODULE(_core, m)
         .def("_set_opt_int_vec", &GrampcBinding::set_opt_int_vec)
         .def("_set_opt_real", &GrampcBinding::set_opt_real)
         .def("_set_opt_real_vec", &GrampcBinding::set_opt_real_vec)
+        .def("set_rws_u", &GrampcBinding::set_rws_u)
+        .def("set_rws_multiplier", &GrampcBinding::set_rws_multiplier)
+        .def("set_rws_penalty", &GrampcBinding::set_rws_penalty)
         .def("print_opts", &GrampcBinding::print_opts)
         .def("print_params", &GrampcBinding::print_params)
         .def("print_status", &GrampcBinding::print_status)

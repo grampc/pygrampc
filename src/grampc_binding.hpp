@@ -37,7 +37,7 @@ class GrampcBinding
     {
     public:
         grampc_param();
-        void reMapMemory(const typeGRAMPC* grampc);
+        void remap_memory(const typeGRAMPC* grampc);
     public:
         int* Nx;
         int* Nu;
@@ -74,7 +74,7 @@ class GrampcBinding
     {
     public:
         grampc_opt();
-        void reMapMemory(const typeGRAMPC* grampc);
+        void remap_memory(const typeGRAMPC* grampc);
     public:
         int* Nhor;
         int* MaxGradIter;
@@ -148,7 +148,7 @@ class GrampcBinding
     {
     public:
         grampc_sol();
-        void reMapMemory(const typeGRAMPC* grampc);
+        void remap_memory(const typeGRAMPC* grampc);
     public:
         Eigen::Map<Vector> xnext;
         Eigen::Map<Vector> unext;
@@ -168,7 +168,7 @@ class GrampcBinding
     {
     public:
         grampc_rws();
-        void reMapMemory(const typeGRAMPC* grampc);
+        void remap_memory(const typeGRAMPC* grampc);
     public:
         Eigen::Map<Vector> t;
         Eigen::Map<Vector> tls;
@@ -254,6 +254,12 @@ class GrampcBinding
         void set_opt_real(const std::string& key, typeRNum value);
         // Sets the option of type typeRNum array given by the literal string key.
         void set_opt_real_vec(const std::string& key, const std::vector<typeRNum>& values);
+
+        void set_rws_u(const Eigen::Ref<const Matrix>& u_new);
+        void set_rws_multiplier(const Eigen::Ref<const Matrix>& multiplier_new);
+        void set_rws_penalty(const Eigen::Ref<const Matrix>& penalty_new);
+
+        void fill_rws_memory(const Eigen::Ref<Matrix> rws_matrix, const Eigen::Ref<const Matrix>& new_data);
 
         // access the probFct like the Matlab interface
         Vector ffct(typeRNum t, Vector x, Vector u, Vector p);
