@@ -419,13 +419,7 @@ void GrampcBinding::fill_rws_memory(Eigen::Ref<Matrix> rws_matrix, const Eigen::
     }
 
     // copy the new data to the rws_matrix.
-    for (int col = 0; col < rws_matrix.cols(); col++)
-    {
-        for (int row = 0; row < rws_matrix.rows(); row++)
-        {
-            rws_matrix(row, col) = new_data(row, col);
-        }
-    }
+    rws_matrix = new_data;
 }
 
 void GrampcBinding::set_rws_u(const Eigen::Ref<const Matrix>& u_new)
