@@ -17,6 +17,10 @@ You need a suitable C++ compiler installed listed at the [pybind11](https://gith
 ```
 pip install "path to interface"
 ```
+Alternatively you can install directly from git via
+```
+pip install git+https://github.com/grampc/pygrampc
+```
 
 ## Usage
 Please refer to the two examples inside the `examples` folder.
