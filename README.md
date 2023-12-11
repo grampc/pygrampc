@@ -94,3 +94,22 @@ pip install "path to interface" --config-settings=cmake.build-type="DEBUG"
 ```
 Then compile your C++ problem description in debug mode and use a suitable debugger. 
 Using the `Python C++ Debugger` extensions for VS Code is a reliable way to debug Python and C++ code.
+
+## Citing
+
+If you are using GRAMPC in your work, please cite 
+```
+@Article{,
+  author   = {Englert, Tobias and Völz, Andreas and Mesmer, Felix and Rhein, Sönke and Graichen, Knut},
+  title    = {A software framework for embedded nonlinear model predictive control using a gradient-based augmented Lagrangian approach (GRAMPC)},
+  doi      = {10.1007/s11081-018-9417-2},
+  issn     = {1573-2924},
+  number   = {3},
+  pages    = {769--809},
+  url      = {https://doi.org/10.1007/s11081-018-9417-2},
+  volume   = {20},
+  journal  = {Optimization and Engineering},
+  refid    = {Englert2019},
+  year     = {2019},
+}
+```
