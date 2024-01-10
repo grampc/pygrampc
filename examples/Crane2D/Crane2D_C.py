@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pygrampc as mpc
 from scipy.integrate import solve_ivp
 # import the C++ problem description. Might be a different path depending on the used compiler. Look for .pyd or .so files
-from build.Release.crane_problem import Crane2D
+from crane_problem import Crane2D
 
 
 if __name__ == "__main__":

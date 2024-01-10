@@ -422,12 +422,12 @@ class GrampcResults:
 
         if grampc.param.NgT + grampc.param.NhT > 0:
             if grampc.param.NgT:
-                self.constrT[index, self._id.h:self._id.gT] = grampc.gTfct(self.t[index], self.x[index, :], self.p[index, :])
+                self.constrT[index, 0:grampc.param.NgT] = grampc.gTfct(self.t[index], self.x[index, :], self.p[index, :])
             if grampc.param.NhT:
-                self.constrT[index, self._id.gT:self._id.hT] = grampc.hTfct(self.t[index], self.x[index, :], self.p[index, :])
+                self.constrT[index, grampc.param.NgT:grampc.param.Ng+grampc.param.NhT] = grampc.hTfct(self.t[index], self.x[index, :], self.p[index, :])
 
             self.multT[index, :] = grampc.rws.mult[self._id.h:self._id.hT, -1]
-            self.penT[index, :] = grampc.rws.pen[self._id.h:self._id.gT, -1]
+            self.penT[index, :] = grampc.rws.pen[self._id.h:self._id.hT, -1]
 
     def plot(self):
         """
