@@ -1,11 +1,11 @@
-import pygrampc as mpc
+from pygrampc import ProblemBase, Grampc, GrampcResults
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 
-class DoubleIntegrator(mpc.ProblemBase):
+class DoubleIntegrator(ProblemBase):
     def __init__(self):
-        mpc.ProblemBase.__init__(self)
+        ProblemBase.__init__(self)
         self.Nx = 2
         self.Nu = 1
         self.Np = 0
@@ -50,15 +50,16 @@ class DoubleIntegrator(mpc.ProblemBase):
 
 
 if __name__ == "__main__":
-    plot = True
-    options = "DoubleIntegrator.json"
-    Problem = DoubleIntegrator()
-
     Tsim = 8
     plotSteps = 150
-    grampc = mpc.Grampc(Problem, options, plot_prediction=False)
+    options = "DoubleIntegrator.json"
 
-    vec = mpc.GrampcResults(grampc, Tsim, plot_results=plot, plot_statistics=plot)
+    # initialize problem and GRAMPC
+    Problem = DoubleIntegrator()
+    grampc = Grampc(Problem, options, plot_prediction=False)
+
+    # construct solution structure
+    vec = GrampcResults(grampc, Tsim, plot_results=True, plot_statistics=True)
 
     dt = grampc.param.dt
 
@@ -69,9 +70,11 @@ if __name__ == "__main__":
         if i + 1 > len(vec.t) or vec.t[i + 1] > Tsim:
             break
 
+        # simulate system
         sol = solve_ivp(grampc.ffct, [t, t + dt], grampc.param.x0,
                         args=(grampc.sol.unext, grampc.sol.pnext))
 
+        # set current time and state
         grampc.set_param({"x0": sol.y[:, -1],
                          "t0": t + dt})
 
@@ -79,6 +82,7 @@ if __name__ == "__main__":
             grampc.set_opt({"OptimTime": "off"})
             Tsim = vec.t[i + 1]
 
+        # plots of the grampc predictions
         if i % plotSteps == 0:
             grampc.plot()
             vec.plot()

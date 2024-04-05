@@ -154,7 +154,7 @@ class GrampcBinding:
         Raises:
             RuntimeError: if dt or Thor don't have valid values
         """
-        pass
+        
     def estim_penmin(self, run_grampc: bool) -> None:
         """
         Estimates the minimal penalty parameter value. 
@@ -165,7 +165,6 @@ class GrampcBinding:
         Raises:
             RuntimeError: if dt or Thor don't have valid values
         """
-        pass
 
     def set_rws_u(self, u_new: np.ndarray) -> None:
         """
@@ -213,17 +212,16 @@ class GrampcBinding:
         """
         Prints the options of the underlying grampc_opt struct.
         """
-        pass
+
     def print_params(self) -> None:
         """
         Prints the parameters of the underlying grampc_param struct.
         """
-        pass
+
     def print_status(self) -> None:
         """
         Prints the current status of GRAMPC.
         """
-        pass
 
 class ProblemBase:
     Ng: int

@@ -11,7 +11,7 @@
 #include "Crane2D.hpp"
 #include <cmath>
 
-Crane2D::Crane2D(Vector Q, Vector R, typeRNum ScaleConstraint, typeRNum MaxConstraintHeight, typeRNum MaxAngularDeflection)
+Crane2D::Crane2D(Vector Q, Vector R, ctypeRNum ScaleConstraint, ctypeRNum MaxConstraintHeight, ctypeRNum MaxAngularDeflection)
  : ProblemBase()
 {
     Nx = 6;
@@ -30,7 +30,7 @@ Crane2D::Crane2D(Vector Q, Vector R, typeRNum ScaleConstraint, typeRNum MaxConst
 
 /** System function f(t,x,u,p)
 ------------------------------------ **/
-void Crane2D::ffct(VectorRef out, const double t, cVectorRef x, cVectorRef u, cVectorRef p) 
+void Crane2D::ffct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) 
 {
     out[0] = x[1];
     out[1] = u[0];
@@ -41,7 +41,7 @@ void Crane2D::ffct(VectorRef out, const double t, cVectorRef x, cVectorRef u, cV
 };
 
 /** Jacobian df/dx multiplied by vector vec, i.e. (df/dx)^T*vec or vec^T*(df/dx) **/
-void Crane2D::dfdx_vec(VectorRef out, const double t, cVectorRef x, cVectorRef vec, cVectorRef u, cVectorRef p) 
+void Crane2D::dfdx_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef vec, cVectorRef u, cVectorRef p) 
 {
     typeRNum sinX = sin(x[4]);
     typeRNum cosX = cos(x[4]);
@@ -56,7 +56,7 @@ void Crane2D::dfdx_vec(VectorRef out, const double t, cVectorRef x, cVectorRef v
 };
 
 /** Jacobian df/du multiplied by vector vec, i.e. (df/du)^T*vec or vec^T*(df/du) **/
-void Crane2D::dfdu_vec(VectorRef out, const double t, cVectorRef x, cVectorRef vec, cVectorRef u, cVectorRef p) 
+void Crane2D::dfdu_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef vec, cVectorRef u, cVectorRef p) 
 {
     out[0] = vec[1] - (cos(x[4]) * vec[5]) / x[2];
     out[1] = vec[3];
@@ -65,7 +65,7 @@ void Crane2D::dfdu_vec(VectorRef out, const double t, cVectorRef x, cVectorRef v
 
 /** Integral cost l(t,x(t),u(t),p,xdes,udes)
 -------------------------------------------------- **/
-void Crane2D::lfct(VectorRef out, const double t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) 
+void Crane2D::lfct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) 
 {
     out[0] = 0.0;
     for (typeInt i = 0; i < Q.size(); i++)
@@ -78,7 +78,7 @@ void Crane2D::lfct(VectorRef out, const double t, cVectorRef x, cVectorRef u, cV
     }
 };
 /** Gradient dl/dx **/
-void Crane2D::dldx(VectorRef out, const double t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) 
+void Crane2D::dldx(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) 
 {
     for (typeInt i = 0; i < Q.size(); i++)
     {
@@ -86,7 +86,7 @@ void Crane2D::dldx(VectorRef out, const double t, cVectorRef x, cVectorRef u, cV
     }
 };
 /** Gradient dl/du **/
-void Crane2D::dldu(VectorRef out, const double t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) 
+void Crane2D::dldu(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) 
 {
     for (typeInt i = 0; i < R.size(); i++)
     {
@@ -96,7 +96,7 @@ void Crane2D::dldu(VectorRef out, const double t, cVectorRef x, cVectorRef u, cV
 
 
 /** Inequality constraints h(t,x,u,p) < 0 */
-void Crane2D::hfct(VectorRef out, const double t, cVectorRef x, cVectorRef u, cVectorRef p) 
+void Crane2D::hfct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) 
 {
     typeRNum Position = x[0] + sin(x[4]) * x[2];
 
@@ -106,7 +106,7 @@ void Crane2D::hfct(VectorRef out, const double t, cVectorRef x, cVectorRef u, cV
 };
 
 /** Jacobian dh/dx multiplied by vector vec, i.e. (dh/dx)^T*vec or vec^T*(dg/dx) **/
-void Crane2D::dhdx_vec(VectorRef out, const double t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) 
+void Crane2D::dhdx_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) 
 {
     typeRNum tmp = ScaleConstraint * (x[0] + sin(x[4]) * x[2]);
 
@@ -119,7 +119,7 @@ void Crane2D::dhdx_vec(VectorRef out, const double t, cVectorRef x, cVectorRef u
 };
 
 /** Jacobian dh/du multiplied by vector vec, i.e. (dh/du)^T*vec or vec^T*(dg/du) **/
-void Crane2D::dhdu_vec(VectorRef out, const double t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec)
+void Crane2D::dhdu_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec)
 {
     out[0] = 0;
 };
