@@ -344,7 +344,7 @@ class GrampcResults:
         self.J = np.full((num_data_points, 2), nan)
 
         self.CPUtime = np.full((num_data_points, 1), nan)
-        self.lsExplicit = np.full((num_data_points, 1), nan)
+        self.linesearch_step_size = np.full((num_data_points, 1), nan)
         self.continuous_constraints = grampc.param.Ng + grampc.param.Nh > 0
 
         if grampc.param.Ng + grampc.param.Nh > 0:
@@ -381,8 +381,10 @@ class GrampcResults:
         self.u[index, :] = grampc.rws.u[:, 0] * grampc.opt.uScale + grampc.opt.uOffset
         self.adj[index, :] = grampc.rws.adj[:, 0] / grampc.opt.xScale
         self.J[index, :] = grampc.sol.J
-        if grampc.opt.LineSearchType != 0:
-            self.lsExplicit[index] = grampc.rws.lsExplicit[2]
+        if grampc.opt.LineSearchType == 0:
+            self.linesearch_step_size[index] = grampc.rws.lsAdapt[3 + grampc.opt.MaxGradIter * 8]
+        elif grampc.opt.LineSearchType >= 1:
+            self.linesearch_step_size[index] = grampc.rws.lsExplicit[2]
 
         # retrieve the equality and inequality constraints
         if grampc.param.Ng + grampc.param.Nh > 0:
@@ -435,7 +437,7 @@ class GrampcResults:
             statistic_axs[1].plot(self.t, self.CPUtime)
             statistic_axs[1].set_title("Computation time in ms")
 
-            statistic_axs[2].plot(self.t, self.lsExplicit)
+            statistic_axs[2].plot(self.t, self.linesearch_step_size)
             statistic_axs[2].set_title("Line search step size")
             statistic_axs[2].set_yscale("log")
             
