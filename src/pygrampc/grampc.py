@@ -124,7 +124,8 @@ class Grampc(GrampcBinding):
             self.set_opt(grampc_options["Options"])
 
         if plot_prediction:
-            self.fig = plt.figure(figsize=(10, 5))
+            self.fig, _ = plt.subplots(2, 3, sharex=True, figsize=(10, 5))
+
         else:
             self.fig = None
 
@@ -263,63 +264,35 @@ class Grampc(GrampcBinding):
         Draws the current prediction plot with the values of the rws struct.
         """
         if self.fig is not None:
-            plt.figure(self.fig.number)
-            self.fig.clf()
+
             self.fig.suptitle("Prediction")
+            axs = self.fig.axes
+            for ax in axs:
+                ax.clear()
+                ax.grid()
 
-            self.fig.add_subplot(2, 3, 1)
-            for val in self.rws.x:
-                plt.plot(self.rws.t, val)
-            plt.xlim(left=self.rws.t[0])
-            plt.grid()
-            plt.title("Predicted states")
+            axs[0].plot(self.rws.t[:, None], self.rws.x.T)
+            axs[0].set_title("Predicted states")
 
-            self.fig.add_subplot(2, 3, 2)
-            for val in self.rws.adj:
-                plt.plot(self.rws.t, val)
-            plt.xlim(left=self.rws.t[0])
-            plt.grid()
-            plt.title("Predicted adjoint states")
+            axs[1].plot(self.rws.t[:, None], self.rws.adj.T)
+            axs[1].set_title("Predicted adjoint states")
 
-            self.fig.add_subplot(2, 3, 3)
-            for val in self.rws.u:
-                plt.plot(self.rws.t, val)
-            plt.xlim(left=self.rws.t[0])
-            plt.grid()
-            plt.title("Predicted controls")
+            axs[2].plot(self.rws.t[:, None], self.rws.u.T)
+            axs[2].set_title("Predicted controls")
 
-            self.fig.add_subplot(2, 3, 4)
             if self.param.Nc == self.param.NgT + self.param.NhT:
-                for val in self.rws.cfct:
-                    plt.scatter(self.rws.t[-1], val[-1])
+                axs[3].scatter(np.full((self.param.Nc, 1), self.rws.t[-1]), self.rws.cfct[:, -1][:, None])
+                axs[4].scatter(np.full((self.param.Nc, 1), self.rws.t[-1]), self.rws.mult[:, -1][:, None])
+                axs[5].scatter(np.full((self.param.Nc, 1), self.rws.t[-1]), self.rws.pen[:, -1][:, None])
             else:
-                for val in self.rws.cfct:
-                    plt.plot(self.rws.t, val)
-            plt.xlim(left=self.rws.t[0])
-            plt.grid()
-            plt.title("Predicted constraints")
+                axs[3].plot(self.rws.t[:, None], self.rws.cfct.T)
+                axs[4].plot(self.rws.t[:, None], self.rws.mult.T)
+                axs[5].plot(self.rws.t[:, None], self.rws.pen.T)
+            axs[3].set_title("Predicted constraints")
+            axs[4].set_title("Predicted Lagrange multipliers")
+            axs[5].set_title("Predicted penalty parameters")
 
-            self.fig.add_subplot(2, 3, 5)
-            if self.param.Nc == self.param.NgT + self.param.NhT:
-                for val in self.rws.mult:
-                    plt.scatter(self.rws.t[-1], val[-1])
-            else:
-                for val in self.rws.mult:
-                    plt.plot(self.rws.t, val)
-            plt.xlim(left=self.rws.t[0])
-            plt.grid()
-            plt.title("Predicted Lagrange multipliers")
-
-            self.fig.add_subplot(2, 3, 6)
-            if self.param.Nc == self.param.NgT + self.param.NhT:
-                for val in self.rws.pen:
-                    plt.scatter(self.rws.t[-1], val[-1])
-            else:
-                for val in self.rws.pen:
-                    plt.plot(self.rws.t, val)
-            plt.xlim(left=self.rws.t[0])
-            plt.grid()
-            plt.title("Predicted penalty parameters")
+            axs[0].set_xlim(left=self.rws.t[0])
 
             plt.draw()
             plt.pause(0.0001)
@@ -385,16 +358,16 @@ class GrampcResults:
             self.penT = np.full((num_data_points, grampc.param.NgT + grampc.param.NhT), nan)
 
         if plot_statistics:
-            self.fig_statistics = plt.figure()
+            self.fig_statistics, _ = plt.subplots(1, 3, sharex=True)
         else:
             self.fig_statistics = None
 
         if plot_results:
-            self.fig_results = plt.figure()
+            self.fig_results, _ = plt.subplots(1 + self.continuous_constraints, 3, sharex=True)
         else:
             self.fig_results = None
 
-    def update(self, grampc: Grampc, index: int):
+    def update(self, grampc: Grampc, index: int, explicit_t0: bool = False):
         """
         Inserts the current datapoints into the numpy arrays.
         Evaluates the constraint functions of GRAMPC.
@@ -402,6 +375,7 @@ class GrampcResults:
         Args:
             grampc: Reference to the GRAMPC interface.
             index (int): Current time index. 
+            explicit_t0 (bool): specifies, if t0 is explicitly present inside the constraints.
         """
         self.x[index, :] = grampc.rws.x[:, 0] * grampc.opt.xScale + grampc.opt.xOffset
         self.u[index, :] = grampc.rws.u[:, 0] * grampc.opt.uScale + grampc.opt.uOffset
@@ -413,18 +387,32 @@ class GrampcResults:
         # retrieve the equality and inequality constraints
         if grampc.param.Ng + grampc.param.Nh > 0:
             if grampc.param.Ng:
-                self.constr[index, 0:self._id.g] = grampc.gfct(self.t[index], self.x[index, :], self.u[index, :], self.p[index, :])
+                if explicit_t0:
+                    self.constr[index, 0:self._id.g] = grampc.gfct(0.0, self.x[index, :], self.u[index, :], self.p[index, :])
+                else:
+                    self.constr[index, 0:self._id.g] = grampc.gfct(self.t[index], self.x[index, :], self.u[index, :], self.p[index, :])
+
             if grampc.param.Nh:
-                self.constr[index, self._id.g:self._id.h] = grampc.hfct(self.t[index], self.x[index, :], self.u[index, :], self.p[index, :])
+                if explicit_t0:
+                    self.constr[index, self._id.g:self._id.h] = grampc.hfct(0.0, self.x[index, :], self.u[index, :], self.p[index, :])
+                else:
+                    self.constr[index, self._id.g:self._id.h] = grampc.hfct(self.t[index], self.x[index, :], self.u[index, :], self.p[index, :])
 
             self.mult[index, :] = grampc.rws.mult[0:self._id.h, 0]
             self.pen[index, :] = grampc.rws.pen[0:self._id.h, 0]
 
         if grampc.param.NgT + grampc.param.NhT > 0:
             if grampc.param.NgT:
-                self.constrT[index, 0:grampc.param.NgT] = grampc.gTfct(self.t[index], self.x[index, :], self.p[index, :])
+                if explicit_t0:
+                    self.constrT[index, 0:grampc.param.NgT] = grampc.gTfct(0.0, self.x[index, :], self.p[index, :])
+                else:
+                    self.constrT[index, 0:grampc.param.NgT] = grampc.gTfct(self.t[index], self.x[index, :], self.p[index, :])
+
             if grampc.param.NhT:
-                self.constrT[index, grampc.param.NgT:grampc.param.Ng+grampc.param.NhT] = grampc.hTfct(self.t[index], self.x[index, :], self.p[index, :])
+                if explicit_t0:
+                    self.constrT[index, grampc.param.NgT:grampc.param.Ng+grampc.param.NhT] = grampc.hTfct(0.0, self.x[index, :], self.p[index, :])
+                else:
+                    self.constrT[index, grampc.param.NgT:grampc.param.Ng+grampc.param.NhT] = grampc.hTfct(self.t[index], self.x[index, :], self.p[index, :])
 
             self.multT[index, :] = grampc.rws.mult[self._id.h:self._id.hT, -1]
             self.penT[index, :] = grampc.rws.pen[self._id.h:self._id.hT, -1]
@@ -434,74 +422,54 @@ class GrampcResults:
         Utility function to plot the statistics and results stored in this class.
         """
         if self.fig_statistics is not None:
-            plt.figure(self.fig_statistics.number)
-            self.fig_statistics.clf()
             self.fig_statistics.suptitle("Statistics")
+            
+            statistic_axs = self.fig_statistics.axes
+            for ax in statistic_axs:
+                ax.clear()
+                ax.grid()
 
-            self.fig_statistics.add_subplot(1, 3, 1)
-            plt.plot(self.t, self.J)
-            plt.xlim(self.t[0], self.t[-1])
-            plt.title("Costs")
-            plt.grid()
+            statistic_axs[0].plot(self.t, self.J)
+            statistic_axs[0].set_title("Costs")
 
-            self.fig_statistics.add_subplot(1, 3, 2)
-            plt.plot(self.t, self.CPUtime)
-            plt.xlim(self.t[0], self.t[-1])
-            plt.title("Computation time in ms")
-            plt.grid()
+            statistic_axs[1].plot(self.t, self.CPUtime)
+            statistic_axs[1].set_title("Computation time in ms")
 
-            self.fig_statistics.add_subplot(1, 3, 3)
-            plt.plot(self.t, self.lsExplicit)
-            plt.xlim(self.t[0], self.t[-1])
-            plt.title("Line search step size")
-            plt.yscale("log")
-            plt.grid()
+            statistic_axs[2].plot(self.t, self.lsExplicit)
+            statistic_axs[2].set_title("Line search step size")
+            statistic_axs[2].set_yscale("log")
+            
+            statistic_axs[2].set_xlim((self.t[0], self.t[-1]))
 
         if self.fig_results is not None:
-            plt.figure(self.fig_results.number)
-            self.fig_results.clf()
             self.fig_results.suptitle("Results")
-            numRows = 1
+
+            result_axs = self.fig_results.axes
+
+            for ax in result_axs:
+                ax.clear()
+                ax.grid()
+
+            result_axs[0].plot(self.t, self.x)
+            result_axs[0].set_title("States")
+
+            result_axs[1].plot(self.t, self.adj)
+            result_axs[1].set_title("Adjoint states")
+
+            result_axs[2].plot(self.t, self.u)
+            result_axs[2].set_title("Controls")
 
             if self.continuous_constraints:
-                numRows = 2
+                result_axs[3].plot(self.t, self.constr)
+                result_axs[3].set_title("Constraints")
 
-            self.fig_results.add_subplot(numRows, 3, 1)
-            plt.plot(self.t, self.x)
-            plt.xlim(self.t[0], self.t[-1])
-            plt.title("States")
-            plt.grid()
+                result_axs[4].plot(self.t, self.mult)
+                result_axs[4].set_title("Lagrange multipliers")
 
-            self.fig_results.add_subplot(numRows, 3, 2)
-            plt.plot(self.t, self.adj)
-            plt.xlim(self.t[0], self.t[-1])
-            plt.title("Adjoint states")
-            plt.grid()
-
-            self.fig_results.add_subplot(numRows, 3, 3)
-            plt.plot(self.t, self.u)
-            plt.xlim(self.t[0], self.t[-1])
-            plt.title("Controls")
-            plt.grid()
-
-            if self.continuous_constraints:
-                self.fig_results.add_subplot(numRows, 3, 4)
-                plt.plot(self.t, self.constr)
-                plt.xlim(self.t[0], self.t[-1])
-                plt.title("Constraints")
-                plt.grid()
-
-                self.fig_results.add_subplot(numRows, 3, 5)
-                plt.plot(self.t, self.mult)
-                plt.xlim(self.t[0], self.t[-1])
-                plt.title("Lagrange multipliers")
-                plt.grid()
-
-                self.fig_results.add_subplot(numRows, 3, 6)
-                plt.plot(self.t, self.pen)
-                plt.xlim(self.t[0], self.t[-1])
-                plt.title("Penalty parameters")
-                plt.grid()
+                result_axs[5].plot(self.t, self.pen)
+                result_axs[5].set_title("Penalty parameters")
+            
+            result_axs[0].set_xlim(self.t[0], self.t[-1])
 
         plt.draw()
         plt.pause(0.0001)
