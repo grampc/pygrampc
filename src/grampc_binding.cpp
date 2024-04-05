@@ -410,12 +410,10 @@ void GrampcBinding::fill_rws_memory(Eigen::Ref<Matrix> rws_matrix, const Eigen::
         // Formats an error message which outputs the expected dimensions and the dimensions of 
         // new_data. Results in an message like: 
         // "Wrong dimensions detected. Expected (2, 10), got (2, 15)."
-        std::string error_message = std::string("Wrong dimensions detected. Expected (") 
-            + std::to_string(rws_matrix.rows()) + std::string(", ") + std::to_string(rws_matrix.cols()) 
-            + std::string("), got (")
-            + std::to_string(new_data.rows()) + std::string(", ") + std::to_string(new_data.cols()) 
-            + std::string(").");
-        throw std::length_error(error_message);
+        std::ostringstream error_message; 
+        error_message << "Wrong dimensions detected. Expected (" << rws_matrix.rows() << ", " << rws_matrix.cols() << "), got ("
+            << new_data.rows() << ", " << new_data.cols() << ")";
+        throw std::length_error(error_message.str());
     }
 
     // copy the new data to the rws_matrix.
