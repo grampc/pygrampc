@@ -91,10 +91,11 @@ class Grampc(GrampcBinding):
 
         Args:
             problem: The concrete problem description object.
-            options_path (str): The path to the options.json file. Optional.
-            plot_prediction (bool): If True enables the prediction plot utility. Optional
+            options_path: The path to the options.json file.
+            plot_prediction: If True enables the prediction plot utility.
         """
         super().__init__(problem)
+
         self._parameters_real_vec = {
             "x0": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nx),
             "xdes": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nx),
@@ -104,7 +105,9 @@ class Grampc(GrampcBinding):
             "umin": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nu),
             "p0": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Np),
             "pmax": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Np),
-            "pmin": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Np)}
+            "pmin": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Np)
+        }
+
         self._options_real_vec = {
             "xScale": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nx),
             "xOffset": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nx),
@@ -113,7 +116,8 @@ class Grampc(GrampcBinding):
             "pScale": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Np),
             "pOffset": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Np),
             "cScale": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nc),
-            "ConstraintsAbsTol": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nc)}
+            "ConstraintsAbsTol": ValidatorOptions((-inf, inf), "OpenInterval", self.param.Nc)
+        }
 
         self._options_int_vec = {"FlagsRodas": ValidatorOptions((0, self.param.Nx), "Rodas", 8)}
 
@@ -131,7 +135,7 @@ class Grampc(GrampcBinding):
 
     @staticmethod
     def _len(value):
-        """Returns the length of a list or numpy array. For scalar inputs the function returns 0"""
+        "Returns the length of a list or numpy array. For scalar inputs the function returns 0"
         try:
             return len(value)
         except TypeError:
@@ -142,9 +146,9 @@ class Grampc(GrampcBinding):
         Helper function to validate the inputs for the GRAMPC parameters and options.
 
         Args:
-            key (str): The option/parameter key to check.
+            key: The option/parameter key to check.
             value: The value of the option/parameter.
-            options (ValidatorOptions): NamedTuple with the option class and allowed values.
+            options: NamedTuple with the option class and allowed values.
 
         Returns:
             bool: True if value is valid.
@@ -166,7 +170,8 @@ class Grampc(GrampcBinding):
             else:
                 raise ValueError(
                     f"{key}: dimension does not match problem description. Expected {options.dimension}, "
-                    f"got {self._len(value)}")
+                    f"got {self._len(value)}"
+                )
 
         elif options.Class == "LeftClosedInterval":
             if self._len(value) == options.dimension:
@@ -178,7 +183,8 @@ class Grampc(GrampcBinding):
             else:
                 raise ValueError(
                     f"{key}: dimension does not match problem description. Expected {options.dimension}, "
-                    f"got {self._len(value)}")
+                    f"got {self._len(value)}"
+                )
 
         elif options.Class == "ClosedInterval":
             if self._len(value) == options.dimension:
@@ -190,7 +196,8 @@ class Grampc(GrampcBinding):
             else:
                 raise ValueError(
                     f"{key}: dimension does not match problem description. Expected {options.dimension}, "
-                    f"got {self._len(value)}")
+                    f"got {self._len(value)}"
+                )
 
         elif options.Class == "Rodas":
             if self._len(value) == 8:
@@ -201,7 +208,8 @@ class Grampc(GrampcBinding):
                     [options.allowedValues[0] <= value[i + 4] <= options.allowedValues[1] for i in range(4)])
             else:
                 raise ValueError(
-                    f"{key}: dimension does not match problem description. Expected 8, got {self._len(value)}")
+                    f"{key}: dimension does not match problem description. Expected 8, got {self._len(value)}"
+                )
 
         if not valid_input:
             raise ValueError(f"{key}: unallowed value detected. Expected {options.allowedValues}, got {value}")
@@ -212,7 +220,7 @@ class Grampc(GrampcBinding):
         Sets the GRAMPC parameters with value validation.
 
         Args:
-            parameters (dict): Mapping with parameter name and values.
+            parameters: Mapping with parameter name and values.
         
         Raises: 
             KeyError: if a parameter key is not a valid GRAMPC parameter.
@@ -234,7 +242,7 @@ class Grampc(GrampcBinding):
         Sets the GRAMPC options with value validation.
 
         Args:
-            options (dict): Mapping with parameter name and values.
+            options: Mapping with parameter name and values.
         
         Raises: 
             KeyError: if a parameter key is not a valid GRAMPC parameter.
@@ -303,13 +311,20 @@ class GrampcResults:
     Dataclass for storing the results of the GRAMPC solver.
 
     Attributes:
-        t (ndarray): time array.
-        x (ndarray): state array.
-        u (ndarray): control array.
-        p (ndarray): parameter array.
-        adj (ndarray): adjoint states array.
-        J (ndarray): cost array.
-        CPUtime (ndarray): CPU wall clock time for every time step
+        t: Time array.
+        x: State array.
+        u: Control array.
+        p: Parameter array.
+        adj: Adjoint states array.
+        J: Costs and augmented costs.
+        CPUtime: CPU wall clock time for every time step.
+        linesearch_step_size: Step size of the line search.
+        constr: Evaluated equality and inequality constraints.
+        mult: Lagrange Multipliers for the constraints.
+        pen: Penalty parameters for the constraints.
+        constrT: Evaluated Terminal equality and inequality constraints.
+        multT: Lagrange Multipliers for the terminal constraints.
+        penT: Penalty parameters for the terminal constraints.
     """
 
     class index:
@@ -329,9 +344,9 @@ class GrampcResults:
 
         Args:
             grampc: Reference to the GRAMPC interface.
-            Tsim (float): End time of your simulation.
-            plot_statistics (bool): If True enables the statistics plot utility. Optional
-            plot_results (bool): If True enables the results plot utility. Optional
+            Tsim: End time of your simulation.
+            plot_statistics: If True enables the statistics plot utility.
+            plot_results: If True enables the results plot utility.
         """
 
         num_data_points = int(Tsim / grampc.param.dt) + 1
@@ -345,7 +360,7 @@ class GrampcResults:
 
         self.CPUtime = np.full((num_data_points, 1), nan)
         self.linesearch_step_size = np.full((num_data_points, 1), nan)
-        self.continuous_constraints = grampc.param.Ng + grampc.param.Nh > 0
+        self._continuous_constraints = grampc.param.Ng + grampc.param.Nh > 0
 
         if grampc.param.Ng + grampc.param.Nh > 0:
             self.constr = np.full((num_data_points, grampc.param.Ng + grampc.param.Nh), nan)
@@ -358,14 +373,14 @@ class GrampcResults:
             self.penT = np.full((num_data_points, grampc.param.NgT + grampc.param.NhT), nan)
 
         if plot_statistics:
-            self.fig_statistics, _ = plt.subplots(1, 3, sharex=True)
+            self._fig_statistics, _ = plt.subplots(1, 3, sharex=True)
         else:
-            self.fig_statistics = None
+            self._fig_statistics = None
 
         if plot_results:
-            self.fig_results, _ = plt.subplots(1 + self.continuous_constraints, 3, sharex=True)
+            self._fig_results, _ = plt.subplots(1 + self._continuous_constraints, 3, sharex=True)
         else:
-            self.fig_results = None
+            self._fig_results = None
 
     def update(self, grampc: Grampc, index: int, explicit_t0: bool = False):
         """
@@ -374,8 +389,8 @@ class GrampcResults:
         
         Args:
             grampc: Reference to the GRAMPC interface.
-            index (int): Current time index. 
-            explicit_t0 (bool): specifies, if t0 is explicitly present inside the constraints.
+            index: Current time index. 
+            explicit_t0: Specifies, if t0 is explicitly present inside the constraints.
         """
         self.x[index, :] = grampc.rws.x[:, 0] * grampc.opt.xScale + grampc.opt.xOffset
         self.u[index, :] = grampc.rws.u[:, 0] * grampc.opt.uScale + grampc.opt.uOffset
@@ -423,10 +438,10 @@ class GrampcResults:
         """
         Utility function to plot the statistics and results stored in this class.
         """
-        if self.fig_statistics is not None:
-            self.fig_statistics.suptitle("Statistics")
+        if self._fig_statistics is not None:
+            self._fig_statistics.suptitle("Statistics")
             
-            statistic_axs = self.fig_statistics.axes
+            statistic_axs = self._fig_statistics.axes
             for ax in statistic_axs:
                 ax.clear()
                 ax.grid()
@@ -443,10 +458,10 @@ class GrampcResults:
             
             statistic_axs[2].set_xlim((self.t[0], self.t[-1]))
 
-        if self.fig_results is not None:
-            self.fig_results.suptitle("Results")
+        if self._fig_results is not None:
+            self._fig_results.suptitle("Results")
 
-            result_axs = self.fig_results.axes
+            result_axs = self._fig_results.axes
 
             for ax in result_axs:
                 ax.clear()
@@ -461,7 +476,7 @@ class GrampcResults:
             result_axs[2].plot(self.t, self.u)
             result_axs[2].set_title("Controls")
 
-            if self.continuous_constraints:
+            if self._continuous_constraints:
                 result_axs[3].plot(self.t, self.constr)
                 result_axs[3].set_title("Constraints")
 

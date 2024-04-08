@@ -2,6 +2,9 @@ import numpy as np
 
 class GrampcBinding:
     class _grampc_opt:
+        """
+        GRAMPC options struct, read only
+        """
         def __init__(self) -> None: ...
         AugLagUpdateGradientRelTol: float
         ConstraintsAbsTol: np.ndarray
@@ -60,6 +63,9 @@ class GrampcBinding:
         xScale: np.ndarray
 
     class _grampc_param:
+        """
+        GRAMPC parameters struct, read only
+        """
         def __init__(self) -> None: ...
         Nc: int
         Ng: int
@@ -85,6 +91,9 @@ class GrampcBinding:
         xdes: np.ndarray
 
     class _grampc_rws:
+        """
+        GRAMPC private real workspace struct with all internal variables, read only
+        """
         def __init__(self) -> None: ...
         T: float
         Tprev: float
@@ -125,6 +134,9 @@ class GrampcBinding:
         x: np.ndarray
 
     class _grampc_sol:
+        """
+        GRAMPC solution struct, read only
+        """
         def __init__(self) -> None: ...
         J: np.ndarray
         Tnext: float
@@ -224,53 +236,91 @@ class GrampcBinding:
         """
 
 class ProblemBase:
+    """
+    Provides an interface for problem descriptions. Every problem description must inherit from this class.
+    """
+    Nx: int
+    Nu: int
+    Np: int
     Ng: int
     NgT: int
     Nh: int
     NhT: int
-    Np: int
-    Nu: int
-    Nx: int
 
-    def __init__(self) -> None: ...
-    def ffct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dfdx_vec(self, out: np.ndarray, t: float, x: np.ndarray, vec: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dfdu_vec(self, out: np.ndarray, t: float, x: np.ndarray, vec: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dfdp_vec(self, out: np.ndarray, t: float, x: np.ndarray, vec: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
+    def __init__(self) -> None: 
+        "Constructor for the problem description. Has to set all the N* attributes of ProblemBase"
+    def ffct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "System function f(x, u, p, t) with out[Nx]. Must be implemented"
+    def dfdx_vec(self, out: np.ndarray, t: float, x: np.ndarray, vec: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product df/dx^T * vec with out[Nx] and vec[Nx]. Must be implemented"
+    def dfdu_vec(self, out: np.ndarray, t: float, x: np.ndarray, vec: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product df/du^T * vec with out[Nu] and vec[Nx]"
+    def dfdp_vec(self, out: np.ndarray, t: float, x: np.ndarray, vec: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product df/dp^T * vec with out[Np] and vec[Nx]"
 
-    def lfct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: ...
-    def dldp(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: ...
-    def dldu(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: ...
-    def dldx(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: ...
+    def lfct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: 
+        "Integral cost with out[1]"
+    def dldx(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: 
+        "Integral cost derivative dl/dx with out[Nx]"
+    def dldu(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: 
+        "Integral cost derivative dl/du with out[Nu]"
+    def dldp(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, xdes: np.ndarray, udes: np.ndarray) -> None: 
+        "Integral cost derivative dl/dp with out[Np]"
 
-    def Vfct(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: ...
-    def dVdT(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: ...
-    def dVdp(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: ...
-    def dVdx(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: ...
+    def Vfct(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: 
+        "Terminal cost with out[1]"
+    def dVdx(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: 
+        "Terminal cost derivative dV/dx with out[Nx]"
+    def dVdp(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: 
+        "Terminal cost derivative dV/dp with out[Np]"
+    def dVdT(self, out: np.ndarray, T: float, x: np.ndarray, p: np.ndarray, xdes: np.ndarray) -> None: 
+        "Terminal cost derivative dV/dT with out[1]"
 
-    def gfct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dgdp_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: ...
-    def dgdu_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: ...
-    def dgdx_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: ...
+    def gfct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Equality constraints with out[Ng]"
+    def dgdx_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: 
+        "Jacobi vector product dg/dx^T * vec with out[Nx] and vec[Ng]"
+    def dgdu_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: 
+        "Jacobi vector product dg/du^T * vec with out[Nu] and vec[Ng]"
+    def dgdp_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: 
+        "Jacobi vector product dg/dp^T * vec with out[Np] and vec[Ng]"
 
-    def hfct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dhdp_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: ...
-    def dhdu_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: ...
-    def dhdx_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: ...
+    def hfct(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Inequality constraints with out[Nh]"
+    def dhdx_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: 
+        "Jacobi vector product dh/dx^T * vec with out[Nx] and vec[Nh]"
+    def dhdu_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: 
+        "Jacobi vector product dh/du^T * vec with out[Nu] and vec[Nh]"
+    def dhdp_vec(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray, vec: np.ndarray) -> None: 
+        "Jacobi vector product dh/dp^T * vec with out[Np] and vec[Nh]"
 
-    def gTfct(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray) -> None: ...
-    def dgTdT_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dgTdp_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dgTdx_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
+    def gTfct(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray) -> None: 
+        "Terminal equality constraints with out[NgT]"
+    def dgTdx_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product dgT/dx^T * vec with out[Nx] and vec[NgT]"
+    def dgTdp_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product dgT/dp^T * vec with out[Np] and vec[NgT]"
+    def dgTdT_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product dgT/dT^T * vec with out[1] and vec[NgT]"
 
-    def hTfct(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray) -> None: ...
-    def dhTdT_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dhTdp_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dhTdx_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
+    def hTfct(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray) -> None: 
+        "Terminal inequality constraints with out[NhT]"
+    def dhTdx_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product dhT/dx^T * vec with out[Nx] and vec[NhT]"
+    def dhTdp_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product dhT/dp^T * vec with out[Np] and vec[NhT]"
+    def dhTdT_vec(self, out: np.ndarray, T: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Jacobi vector product dhT/dT^T * vec with out[1] and vec[NhT]"
 
-    def dfdx(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dfdxtrans(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dfdt(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: ...
-    def dHdxdt(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, vec: np.ndarray, p: np.ndarray) -> None: ...
-    def Mfct(self, out: np.ndarray) -> None: ...
-    def Mtrans(self, out: np.ndarray) -> None: ...
+    def dfdx(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "System jacobian for Rodas with out[Nx * (MLJAC + MUJAC + 1)]"
+    def dfdxtrans(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "Transposed system jacobian for Rodas with out[Nx * (MLJAC + MUJAC + 1)]"
+    def dfdt(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, p: np.ndarray) -> None: 
+        "df/dt for Rodas with out[Nx]"
+    def dHdxdt(self, out: np.ndarray, t: float, x: np.ndarray, u: np.ndarray, vec: np.ndarray, p: np.ndarray) -> None: 
+        "Time derivative of dH/dx for Rodas with out[Nx]"
+    def Mfct(self, out: np.ndarray) -> None: 
+        "Mass matrix for Rodas with out[Nx * (MLMAS + MUMAS + 1)]"
+    def Mtrans(self, out: np.ndarray) -> None: 
+        "Transposed mass matrix for Rodas with out[Nx * (MLMAS + MUMAS + 1)]"
