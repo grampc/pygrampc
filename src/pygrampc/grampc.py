@@ -4,7 +4,7 @@ from typing import NamedTuple, Optional
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ._core import GrampcBinding, ProblemBase
+from ._core import GrampcBinding, ProblemDescription
 
 
 class ValidatorOptions(NamedTuple):
@@ -83,7 +83,7 @@ class Grampc(GrampcBinding):
         "ConstraintsHandling": ValidatorOptions(("auglag", "extpen"), "Enum"),
         "ConvergenceCheck": ValidatorOptions(("on", "off"), "Enum")}
 
-    def __init__(self, problem: ProblemBase, 
+    def __init__(self, problem: ProblemDescription, 
                        options_path: Optional[str] = None, 
                        plot_prediction: Optional[bool] = False):
         """

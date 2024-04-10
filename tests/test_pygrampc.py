@@ -1,11 +1,11 @@
-from pygrampc import ProblemBase, Grampc
+from pygrampc import ProblemDescription, Grampc
 import pytest
 import numpy as np
 
 
-class Problem(ProblemBase):
+class Problem(ProblemDescription):
     def __init__(self):
-        ProblemBase.__init__(self)
+        ProblemDescription.__init__(self)
         self.Ng = 0
         self.NgT = 0
         self.Nh = 0

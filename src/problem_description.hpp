@@ -24,7 +24,7 @@ typedef Eigen::Matrix<typeRNum, Eigen::Dynamic, 1> Vector;
 typedef Eigen::Ref<Vector> VectorRef;
 typedef Eigen::Ref<const Vector> cVectorRef;
 
-class PYBIND11_EXPORT ProblemBase
+class PYBIND11_EXPORT ProblemDescription
 {
     public:
         typeInt Nx;
@@ -39,7 +39,7 @@ class PYBIND11_EXPORT ProblemBase
 
     public:
 
-        virtual ~ProblemBase() {}
+        virtual ~ProblemDescription() {}
 
 		/** System function f(t,x,u,p,userparam)
 		------------------------------------ **/
@@ -131,17 +131,17 @@ class PYBIND11_EXPORT ProblemBase
 };
 
 /*Template class needed for overriting C++ functions in python*/
-class PyProblem : public ProblemBase
+class PyProblem : public ProblemDescription
 {
     public:
         /* Inherit the constructor*/
-        using ProblemBase::ProblemBase;
+        using ProblemDescription::ProblemDescription;
 
         void ffct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) override 
         {
             PYBIND11_OVERRIDE_PURE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 ffct,
                 out, t, x, u, p);
         }
@@ -150,7 +150,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE_PURE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dfdx_vec,
                 out, t, x, vec, u, p);
         }
@@ -159,7 +159,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dfdu_vec,
                 out, t, x, vec, u, p);
         }
@@ -168,7 +168,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dfdp_vec,
                 out, t, x, vec, u, p);
         }
@@ -177,7 +177,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 lfct,
                 out, t, x, u, p, xdes, udes);
         }
@@ -186,7 +186,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dldx,
                 out, t, x, u, p, xdes, udes);
         }
@@ -195,7 +195,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dldu,
                 out, t, x, u, p, xdes, udes);
         }
@@ -204,7 +204,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dldp,
                 out, t, x, u, p, xdes, udes);
         }
@@ -213,7 +213,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 Vfct,
                 out, t, x, p, xdes);
         }
@@ -222,7 +222,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dVdx,
                 out, t, x, p, xdes);
         }
@@ -231,7 +231,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dVdp,
                 out, t, x, p, xdes);
         }
@@ -240,7 +240,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dVdT,
                 out, t, x, p, xdes);
         }
@@ -249,7 +249,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 gfct,
                 out, t, x, u, p);
         }
@@ -258,7 +258,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dgdx_vec,
                 out, t, x, u, p, vec);
         }
@@ -267,7 +267,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dgdu_vec,
                 out, t, x, u, p, vec);
         }
@@ -275,7 +275,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dgdp_vec,
                 out, t, x, u, p, vec);
         }
@@ -284,7 +284,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 hfct,
                 out, t, x, u, p);
         }
@@ -293,7 +293,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dhdx_vec,
                 out, t, x, u, p, vec);
         }
@@ -302,7 +302,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dhdu_vec,
                 out, t, x, u, p, vec);
         }
@@ -310,7 +310,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dhdp_vec,
                 out, t, x, u, p, vec);
         }
@@ -319,7 +319,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 gTfct,
                 out, t, x, p);
         }
@@ -328,7 +328,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dgTdx_vec,
                 out, t, x, p, vec);
         }
@@ -337,7 +337,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dgTdp_vec,
                 out, t, x, p, vec);
         }
@@ -346,7 +346,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dgTdT_vec,
                 out, t, x, p, vec);
         }
@@ -355,7 +355,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 hTfct,
                 out, t, x, p);
         }
@@ -364,7 +364,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dhTdx_vec,
                 out, t, x, p, vec);
         }
@@ -373,7 +373,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dhTdp_vec,
                 out, t, x, p, vec);
         }
@@ -382,7 +382,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dhTdT_vec,
                 out, t, x, p, vec);
         }
@@ -391,7 +391,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dfdx,
                 out, t, x, u, p);
         }
@@ -400,7 +400,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dfdxtrans,
                 out, t, x, u, p);
         }
@@ -409,7 +409,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dfdt,
                 out, t, x, u, p);
         }
@@ -418,7 +418,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 dHdxdt,
                 out, t, x, u, vec, p);
         }
@@ -427,7 +427,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 Mfct,
                 out);
         }
@@ -435,7 +435,7 @@ class PyProblem : public ProblemBase
         {
             PYBIND11_OVERRIDE(
                 void, 
-                ProblemBase, 
+                ProblemDescription, 
                 Mtrans,
                 out);
         }

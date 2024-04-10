@@ -14,7 +14,7 @@
 // insert your problem description here
 
 MyProblem::MyProblem()
- : ProblemBase()
+ : ProblemDescription()
 {
     // Overwrite these parameters defined by ProblemBase
     Nx = 2;
@@ -118,13 +118,13 @@ PYBIND11_MODULE(my_problem, m)
 {
     pybind11::class_<MyProblem, ProblemBase>(m, "MyProblem")
         .def(pybind11::init<>())
-        .def_readonly("Nx", &MyProblem::Nx_)
-        .def_readonly("Nu", &MyProblem::Nu_)
-        .def_readonly("Np", &MyProblem::Np_)
-        .def_readonly("Ng", &MyProblem::Ng_)
-        .def_readonly("Nh", &MyProblem::Nh_)
-        .def_readonly("NgT", &MyProblem::NgT_)
-        .def_readonly("NhT", &MyProblem::NhT_)
+        .def_readonly("Nx", &MyProblem::Nx)
+        .def_readonly("Nu", &MyProblem::Nu)
+        .def_readonly("Np", &MyProblem::Np)
+        .def_readonly("Ng", &MyProblem::Ng)
+        .def_readonly("Nh", &MyProblem::Nh)
+        .def_readonly("NgT", &MyProblem::NgT)
+        .def_readonly("NhT", &MyProblem::NhT)
 
     // these functions are not needed for the GRAMPC interface, but provide an interface for python code
         .def("ffct", &MyProblem::ffct)

@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pygrampc"
-version = "2.2.1"
+version = "2.2.2"
 description="Python interface for the MPC solver GRAMPC"
 readme = "README.md"
 authors = [

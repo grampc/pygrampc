@@ -8,14 +8,14 @@
  * PyGRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
  */
 
-#include "problem_base.hpp"
+#include "problem_description.hpp"
 
 extern "C"
 {
 
     void ocp_dim(typeInt *Nx, typeInt *Nu, typeInt *Np, typeInt *Ng, typeInt *Nh, typeInt *NgT, typeInt *NhT, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         *Nx = problem->Nx;
         *Nu = problem->Nu;
         *Np = problem->Np;
@@ -27,7 +27,7 @@ extern "C"
 
     void ffct(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         // mapping the C pointer to an Eigen::Vector, so that the data is exposed as an numpy array in Python
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
@@ -39,7 +39,7 @@ extern "C"
     
     void dfdx_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *vec, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Nx);
@@ -51,7 +51,7 @@ extern "C"
 
     void dfdu_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *vec, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nu);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Nx);
@@ -63,7 +63,7 @@ extern "C"
 
     void dfdp_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *vec, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Np);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Nx);
@@ -75,7 +75,7 @@ extern "C"
 
     void lfct(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *xdes, ctypeRNum *udes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, 1);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -88,7 +88,7 @@ extern "C"
 
     void dldx(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *xdes, ctypeRNum *udes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -101,7 +101,7 @@ extern "C"
 
     void dldu(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *xdes, ctypeRNum *udes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nu);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -114,7 +114,7 @@ extern "C"
 
     void dldp(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *xdes, ctypeRNum *udes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Np);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -127,7 +127,7 @@ extern "C"
 
     void Vfct(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *xdes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, 1);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -138,7 +138,7 @@ extern "C"
 
     void dVdx(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *xdes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -149,7 +149,7 @@ extern "C"
 
     void dVdp(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *xdes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Np);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -160,7 +160,7 @@ extern "C"
 
     void dVdT(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *xdes, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, 1);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> xdesMap(xdes, problem->Nx);
@@ -171,7 +171,7 @@ extern "C"
 
     void gfct(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Ng);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> uMap(u, problem->Nu);
@@ -182,7 +182,7 @@ extern "C"
 
     void dgdx_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Ng);
@@ -194,7 +194,7 @@ extern "C"
 
     void dgdu_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nu);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Ng);
@@ -206,7 +206,7 @@ extern "C"
 
     void dgdp_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Np);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Ng);
@@ -218,7 +218,7 @@ extern "C"
 
     void hfct(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nh);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> uMap(u, problem->Nu);
@@ -229,7 +229,7 @@ extern "C"
 
     void dhdx_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Nh);
@@ -241,7 +241,7 @@ extern "C"
 
     void dhdu_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nu);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Nh);
@@ -253,7 +253,7 @@ extern "C"
 
     void dhdp_vec(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Np);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Nh);
@@ -265,7 +265,7 @@ extern "C"
 
     void gTfct(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->NgT);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> pMap(p, problem->Np);
@@ -275,7 +275,7 @@ extern "C"
 
     void dgTdx_vec(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->NgT);
@@ -286,7 +286,7 @@ extern "C"
 
     void dgTdp_vec(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Np);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->NgT);
@@ -297,7 +297,7 @@ extern "C"
 
     void dgTdT_vec(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, 1);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->NgT);
@@ -308,7 +308,7 @@ extern "C"
 
     void hTfct(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->NhT);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> pMap(p, problem->Np);
@@ -318,7 +318,7 @@ extern "C"
 
     void dhTdx_vec(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->NhT);
@@ -329,7 +329,7 @@ extern "C"
 
     void dhTdp_vec(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Np);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->NhT);
@@ -340,7 +340,7 @@ extern "C"
 
     void dhTdT_vec(typeRNum *out, ctypeRNum T, ctypeRNum *x, ctypeRNum *p, ctypeRNum *vec, typeUSERPARAM* userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, 1);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->NhT);
@@ -351,7 +351,7 @@ extern "C"
 
     void dfdx(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Rodas_Jac); //Nx * (MLJAC + MUJAC + 1)
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> uMap(u, problem->Nu);
@@ -362,7 +362,7 @@ extern "C"
 
     void dfdxtrans(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Rodas_Jac); //Nx * (MLJAC + MUJAC + 1)
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> uMap(u, problem->Nu);
@@ -373,7 +373,7 @@ extern "C"
 
     void dfdt(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *p, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> uMap(u, problem->Nu);
@@ -384,7 +384,7 @@ extern "C"
 
     void dHdxdt(typeRNum *out, ctypeRNum t, ctypeRNum *x, ctypeRNum *u, ctypeRNum *vec, ctypeRNum *p, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Nx);
         Eigen::Map<const Vector> xMap(x, problem->Nx);
         Eigen::Map<const Vector> vecMap(vec, problem->Nx);
@@ -396,7 +396,7 @@ extern "C"
 
     void Mfct(typeRNum *out, typeUSERPARAM *userparam) // Auf Python Seite eine Matrix?
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Rodas_M); //Nx * (MLMAS + MUMAS + 1)
         
         problem->Mfct(outMap);
@@ -404,7 +404,7 @@ extern "C"
 
     void Mtrans(typeRNum *out, typeUSERPARAM *userparam)
     {
-        ProblemBase* problem = (ProblemBase*) userparam;
+        ProblemDescription* problem = (ProblemDescription*) userparam;
         Eigen::Map<Vector> outMap(out, problem->Rodas_M); //Nx * (MLMAS + MUMAS + 1)
         
         problem->Mtrans(outMap);

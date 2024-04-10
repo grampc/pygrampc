@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from pygrampc import ProblemBase, Grampc, GrampcResults
+from pygrampc import ProblemDescription, Grampc, GrampcResults
 from scipy.integrate import solve_ivp
 
 
-class Crane2D(ProblemBase):
+class Crane2D(ProblemDescription):
     def __init__(self, Q: np.array, R: np.array, ScaleConstraint, MaxConstraintHeight, MaxAngularDeflection):
-        ProblemBase.__init__(self)
+        ProblemDescription.__init__(self)
         self.Nx = 6
         self.Nu = 2
         self.Np = 0

@@ -27,8 +27,14 @@ set(GRAMPC_SOURCES
     grampc/src/rodas.c
     grampc/src/ruku45.c
     grampc/src/simpson.c
-    grampc/src/trapezodial.c)
+    grampc/src/trapezodial.c
+)
 
-pybind11_add_module(_core MODULE ${GRAMPC_SOURCES} src/problem_base.cpp src/grampc_binding.cpp)
+set(PYGRAMPC_SOURCES
+    src/problem_description.cpp
+    src/grampc_interface.cpp
+)
+
+pybind11_add_module(_core MODULE ${GRAMPC_SOURCES} ${PYGRAMPC_SOURCES} src/binding.cpp)
 
 install(TARGETS _core DESTINATION pygrampc)

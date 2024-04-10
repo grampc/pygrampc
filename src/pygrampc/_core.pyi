@@ -148,13 +148,13 @@ class GrampcBinding:
         unext: np.ndarray
         xnext: np.ndarray
 
-    problem: ProblemBase
+    problem: ProblemDescription
     opt: _grampc_opt
     param: _grampc_param
     rws: _grampc_rws
     sol: _grampc_sol
 
-    def __init__(self, problem: ProblemBase) -> None: ...
+    def __init__(self, problem: ProblemDescription) -> None: ...
 
     def run(self) -> float:
         """
@@ -235,7 +235,7 @@ class GrampcBinding:
         Prints the current status of GRAMPC.
         """
 
-class ProblemBase:
+class ProblemDescription:
     """
     Provides an interface for problem descriptions. Every problem description must inherit from this class.
     """

@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from pygrampc import ProblemBase, Grampc, GrampcResults
+from pygrampc import ProblemDescription, Grampc, GrampcResults
 from scipy.integrate import solve_ivp
 
 # import the C++ problem description. Might be a different path depending on the used compiler. Look for .pyd or .so files

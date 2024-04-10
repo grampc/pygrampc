@@ -8,9 +8,10 @@
  * PyGRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
  */
 
-#include "problem_base.hpp"
+#include "problem_description.hpp"
 
-class PYBIND11_EXPORT MyProblem : public ProblemBase
+//PYBIND11_EXPORT only needed if class shall be extended in Python. Then also a trampoline class is needed.
+class PYBIND11_EXPORT MyProblem : public ProblemDescription
 {
     public:
         // Define own variables here

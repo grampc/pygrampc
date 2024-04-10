@@ -15,16 +15,13 @@ extern "C"
 {
     #include "grampc.h"
 }
-#include "problem_base.hpp"
+#include "problem_description.hpp"
 #include <Eigen/Dense>
 #include <string>
 #include <vector>
 #include <chrono>
 #include <stdexcept>
-
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/eigen.h>
+#include <memory>
 
 typedef Eigen::Matrix<typeRNum, Eigen::Dynamic, 1> Vector;
 typedef Eigen::Matrix<typeRNum, Eigen::Dynamic, Eigen::Dynamic> Matrix;
@@ -224,11 +221,11 @@ class GrampcBinding
         grampc_rws rws;
 
         // id of the concrete problem
-        ProblemBase* problem_binding;
+        ProblemDescription* problem_description;
 
     public:
         // Create Python interface to the GRAMPC solver for problem description
-        GrampcBinding(ProblemBase* problem);
+        GrampcBinding(ProblemDescription* problem);
         ~GrampcBinding();
 
         // Calls grampc_run and returns the wall clock time of one call in milliseconds.

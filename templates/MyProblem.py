@@ -1,9 +1,9 @@
-from pygrampc import ProblemBase
+from pygrampc import ProblemDescription
 
 
-class MyProblem(ProblemBase):
+class MyProblem(ProblemDescription):
     def __init__(self):
-        ProblemBase.__init__(self)
+        ProblemDescription.__init__(self)
         self.Nx = 0
         self.Nu = 0
         self.Np = 0

@@ -1,11 +1,11 @@
-from pygrampc import ProblemBase, Grampc, GrampcResults
+from pygrampc import ProblemDescription, Grampc, GrampcResults
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 
-class DoubleIntegrator(ProblemBase):
+class DoubleIntegrator(ProblemDescription):
     def __init__(self):
-        ProblemBase.__init__(self)
+        ProblemDescription.__init__(self)
         self.Nx = 2
         self.Nu = 1
         self.Np = 0
