@@ -14,6 +14,8 @@
 #include <pybind11/stl.h>
 #include <pybind11/eigen.h>
 
+using namespace grampc;
+
 PYBIND11_MODULE(_core, m)
 {
     pybind11::class_<GrampcBinding> binding(m, "GrampcBinding");
@@ -206,7 +208,7 @@ PYBIND11_MODULE(_core, m)
         .def_readonly("workRodas", &prefix_rws::workRodas)
         .def_readonly("iworkRodas", &prefix_rws::iworkRodas);
 
-    pybind11::class_<ProblemDescription, PyProblem>(m, "ProblemDescription")
+    pybind11::class_<ProblemDescription, PyProblem, ProblemDescriptionPtr>(m, "ProblemDescription")
         .def(pybind11::init<>())
         .def_readwrite("Nx", &ProblemDescription::Nx)
         .def_readwrite("Nu", &ProblemDescription::Nu)
