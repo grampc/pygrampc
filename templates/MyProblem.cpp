@@ -9,7 +9,6 @@
  */
 
 #include "MyProblem.hpp"
-#include <cmath>
 
 // insert your problem description here
 
@@ -28,95 +27,95 @@ MyProblem::MyProblem()
 
 /** System function f(t,x,u,p)
 ------------------------------------ **/
-void MyProblem::ffct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::ffct(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian df/dx multiplied by vector vec, i.e. (df/dx)^T*vec or vec^T*(df/dx) **/
-void MyProblem::dfdx_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef vec, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::dfdx_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef vec, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian df/du multiplied by vector vec, i.e. (df/du)^T*vec or vec^T*(df/du) **/
-void MyProblem::dfdu_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef vec, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::dfdu_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef vec, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian df/dp multiplied by vector vec, i.e. (df/dp)^T*vec or vec^T*(df/dp) **/
-void MyProblem::dfdp_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef vec, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::dfdp_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef vec, VectorConstRef u, VectorConstRef p) {};
 
 
 /** Integral cost l(t,x(t),u(t),p,xdes,udes)
 -------------------------------------------------- **/
-void MyProblem::lfct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) {};
+virtual void MyProblem::lfct(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef xdes, VectorConstRef udes) {};
 /** Gradient dl/dx **/
-void MyProblem::dldx(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) {};
+virtual void MyProblem::dldx(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef xdes, VectorConstRef udes) {};
 /** Gradient dl/du **/
-void MyProblem::dldu(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) {};
+virtual void MyProblem::dldu(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef xdes, VectorConstRef udes) {};
 /** Gradient dl/dp **/
-void MyProblem::dldp(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef xdes, cVectorRef udes) {};
+virtual void MyProblem::dldp(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef xdes, VectorConstRef udes) {};
 
 
 /** Terminal cost V(T,x,p) */
-void MyProblem::Vfct(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef xdes) {};
+virtual void MyProblem::Vfct(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef xdes) {};
 /** Gradient dV/dx **/
-void MyProblem::dVdx(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef xdes) {};
+virtual void MyProblem::dVdx(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef xdes) {};
 /** Gradient dV/dp **/
-void MyProblem::dVdp(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef xdes) {};
+virtual void MyProblem::dVdp(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef xdes) {};
 /** Gradient dV/dT **/
-void MyProblem::dVdT(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef xdes) {};
+virtual void MyProblem::dVdT(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef xdes) {};
 
 
 /** Equality constraints g(t,x,u,p) = 0 */
-void MyProblem::gfct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::gfct(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian dg/dx multiplied by vector vec, i.e. (dg/dx)^T*vec or vec^T*(dg/dx) **/
-void MyProblem::dgdx_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dgdx_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dg/du multiplied by vector vec, i.e. (dg/du)^T*vec or vec^T*(dg/du) **/
-void MyProblem::dgdu_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dgdu_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dg/dp multiplied by vector vec, i.e. (dg/dp)^T*vec or vec^T*(dg/dp) **/
-void MyProblem::dgdp_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dgdp_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef vec) {};
 
 
 /** Inequality constraints h(t,x,u,p) < 0 */
-void MyProblem::hfct(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::hfct(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian dh/dx multiplied by vector vec, i.e. (dh/dx)^T*vec or vec^T*(dg/dx) **/
-void MyProblem::dhdx_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dhdx_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dh/du multiplied by vector vec, i.e. (dh/du)^T*vec or vec^T*(dg/du) **/
-void MyProblem::dhdu_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dhdu_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dh/dp multiplied by vector vec, i.e. (dh/dp)^T*vec or vec^T*(dg/dp) **/
-void MyProblem::dhdp_vec(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dhdp_vec(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p, VectorConstRef vec) {};
 
 
 /** Terminal equality constraints gT(T,x,p) = 0 */
-void MyProblem::gTfct(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p) {};
+virtual void MyProblem::gTfct(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p) {};
 /** Jacobian dgT/dx multiplied by vector vec, i.e. (dgT/dx)^T*vec or vec^T*(dgT/dx) **/
-void MyProblem::dgTdx_vec(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dgTdx_vec(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dgT/dp multiplied by vector vec, i.e. (dgT/dp)^T*vec or vec^T*(dgT/dp) **/
-void MyProblem::dgTdp_vec(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dgTdp_vec(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dgT/dT multiplied by vector vec, i.e. (dgT/dT)^T*vec or vec^T*(dgT/dT) **/
-void MyProblem::dgTdT_vec(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dgTdT_vec(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef vec) {};
 
 
 /** Terminal inequality constraints hT(T,x,p) < 0 */
-void MyProblem::hTfct(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p) {};
+virtual void MyProblem::hTfct(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p) {};
 /** Jacobian dhT/dx multiplied by vector vec, i.e. (dhT/dx)^T*vec or vec^T*(dhT/dx) **/
-void MyProblem::dhTdx_vec(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dhTdx_vec(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dhT/dp multiplied by vector vec, i.e. (dhT/dp)^T*vec or vec^T*(dhT/dp) **/
-void MyProblem::dhTdp_vec(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dhTdp_vec(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef vec) {};
 /** Jacobian dhT/dT multiplied by vector vec, i.e. (dhT/dT)^T*vec or vec^T*(dhT/dT) **/
-void MyProblem::dhTdT_vec(VectorRef out, ctypeRNum T, cVectorRef x, cVectorRef p, cVectorRef vec) {};
+virtual void MyProblem::dhTdT_vec(VectorRef out, ctypeRNum T, VectorConstRef x, VectorConstRef p, VectorConstRef vec) {};
 
 
 /** Additional functions required for semi-implicit systems
 M*dx/dt(t) = f(t0+t,x(t),u(t),p) using the solver RODAS
 ------------------------------------------------------- **/
 /** Jacobian df/dx in cVectorRef form (column-wise) **/
-void MyProblem::dfdx(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::dfdx(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian df/dx in vector form (column-wise) **/
-void MyProblem::dfdxtrans(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::dfdxtrans(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian df/dt **/
-void MyProblem::dfdt(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef p) {};
+virtual void MyProblem::dfdt(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef p) {};
 /** Jacobian d(dH/dx)/dt  **/
-void MyProblem::dHdxdt(VectorRef out, ctypeRNum t, cVectorRef x, cVectorRef u, cVectorRef vec, cVectorRef p) {};
+virtual void MyProblem::dHdxdt(VectorRef out, ctypeRNum t, VectorConstRef x, VectorConstRef u, VectorConstRef vec, VectorConstRef p) {};
 /** Mass matrix in vector form (column-wise, either banded or full matrix) **/
-void MyProblem::Mfct(VectorRef out) {};
+virtual void MyProblem::Mfct(VectorRef out) {};
 /** Transposed mass matrix in vector form (column-wise, either banded or full matrix) **/
-void MyProblem::Mtrans(VectorRef out) {};
+virtual void MyProblem::Mtrans(VectorRef out) {};
 
 PYBIND11_MODULE(my_problem, m)
 {
-    pybind11::class_<MyProblem, ProblemBase>(m, "MyProblem")
+    pybind11::class_<MyProblem, ProblemDescription>(m, "MyProblem")
         .def(pybind11::init<>())
         .def_readonly("Nx", &MyProblem::Nx)
         .def_readonly("Nu", &MyProblem::Nu)
