@@ -2,7 +2,8 @@ venv/*
 .idea/*
 .vscode/*
 __pycache__/*
-build/*
+build*/*
 .vs/*
 *.pyc
 *.code-workspace
+*.pyd

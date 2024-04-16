@@ -242,10 +242,10 @@ namespace grampc
         }
     }
 
-    GrampcBinding::GrampcBinding(ProblemDescription* problem)
+    GrampcBinding::GrampcBinding(ProblemDescriptionPtr problem)
         : problem_description(problem)
     {
-        grampc_init(&grampc_, problem_description);
+        grampc_init(&grampc_, problem_description.get());
         param.remap_memory(grampc_);
         opt.remap_memory(grampc_);
         rws.remap_memory(grampc_);

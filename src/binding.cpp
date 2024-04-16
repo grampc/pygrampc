@@ -19,7 +19,7 @@ using namespace grampc;
 PYBIND11_MODULE(_core, m)
 {
     pybind11::class_<GrampcBinding> binding(m, "GrampcBinding");
-    binding.def(pybind11::init<ProblemDescription *>())
+    binding.def(pybind11::init<ProblemDescriptionPtr>())
         .def_readonly("param", &GrampcBinding::param)
         .def_readonly("opt", &GrampcBinding::opt)
         .def_readonly("sol", &GrampcBinding::sol)

@@ -223,11 +223,11 @@ namespace grampc
             grampc_rws rws;
 
             // id of the concrete problem
-            ProblemDescription* problem_description;
+            ProblemDescriptionPtr problem_description;
 
         public:
             // Create Python interface to the GRAMPC solver for problem description
-            GrampcBinding(ProblemDescription* problem);
+            GrampcBinding(ProblemDescriptionPtr problem);
             ~GrampcBinding();
 
             // Calls grampc_run and returns the wall clock time of one call in milliseconds.
