@@ -8,8 +8,8 @@
  * PyGRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
  */
 
-#ifndef PROBLEM_BINDINGS_HPP
-#define PROBLEM_BINDINGS_HPP
+#ifndef PROBLEM_DESCRIPTION_HPP
+#define PROBLEM_DESCRIPTION_HPP
 
 extern "C"
 {
@@ -133,7 +133,7 @@ namespace grampc
             virtual void Mtrans(VectorRef out) {}
             
 
-            /** Additional functions required for Taylor-SMPC */
+            /** Additional functions required for Taylor-SMPC in GRAMPC-S */
             /*------------------------------------------------*/
 
             /** Jacobian df/dp in vector form  **/

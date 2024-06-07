@@ -22,6 +22,14 @@ Alternatively you can install directly from git via
 pip install git+https://github.com/grampc/pygrampc
 ```
 
+## Changelog
+
+### Version 2.2.2
+This version adds compatability for a future python interface for `GRAMPC-S`. Due to these changes, existing problem definitions must be recompiled.
+- Changed class identifer from `ProblemBase` to `ProblemDescription`.
+- Added `grampc` namespace in `C++`.
+- Changed type definition `Eigen::Ref<const Vector> cVectorRef` to `const Eigen::Ref<const Vector>& VectorConstRef`.
+
 ## Usage
 Please refer to the two examples inside the `examples` folder.
 
