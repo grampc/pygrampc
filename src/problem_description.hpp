@@ -8,8 +8,8 @@
  * PyGRAMPC is distributed under the BSD-3-Clause license, see LICENSE.txt
  */
 
-#ifndef PROBLEM_DESCRIPTION_HPP
-#define PROBLEM_DESCRIPTION_HPP
+#ifndef PROBLEM_DESCRIPTION
+#define PROBLEM_DESCRIPTION
 
 extern "C"
 {
