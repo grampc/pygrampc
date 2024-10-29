@@ -12,6 +12,8 @@ For questions regarding GRAMPC please refer to the [grampc](https://github.com/g
  - C allocated arrays are exposed via numpy arrays.
 
 ## Installation
+First you need the Eigen 3.4 Library installed on your computer. Download the library at https://eigen.tuxfamily.org/index.php?title=Main_Page and follow the installation commands in their `INSTALL` file.
+
 Clone this repository and install the package via pip. 
 You need a suitable C++ compiler installed listed at the [pybind11](https://github.com/pybind/pybind11) project.
 ```
@@ -25,8 +27,8 @@ pip install git+https://github.com/grampc/pygrampc
 ## Changelog
 
 ### Version 2.2.2
-This version adds compatability for a future python interface for `GRAMPC-S`. Due to these changes, existing problem definitions must be recompiled.
-- Changed class identifer from `ProblemBase` to `ProblemDescription`.
+This version adds compatibility for a future python interface for `GRAMPC-S`. Due to these changes, existing problem definitions must be recompiled.
+- Changed class identifier from `ProblemBase` to `ProblemDescription`.
 - Added `grampc` namespace in `C++`.
 - Changed type definition `Eigen::Ref<const Vector> cVectorRef` to `const Eigen::Ref<const Vector>& VectorConstRef`.
 
@@ -43,7 +45,7 @@ Please note that the Python problem description is intended for rapid prototypin
 If the full speed of GRAMPC is desired, one must write the problem description in C++
 
 #### Initialization
-The attributes Nx, Nu, Np, Ng, Nh, NgT and NhT must be initalized during `__init__()` to circumvent undefined behaviour. 
+The attributes Nx, Nu, Np, Ng, Nh, NgT and NhT must be initialized during `__init__()` to circumvent undefined behaviour. 
 Setting these values during `__init__()` is equivalent to the `void ocp_dim(...)` function from the C interface.
 
 An example would be
