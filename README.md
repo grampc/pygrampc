@@ -1,8 +1,10 @@
 # PyGRAMPC
 
-PyGRAMPC is a Python interface for the GRAMPC solver build by pybind11. 
+PyGRAMPC is a Python interface for GRAMPC v2.2.
 It features the same functionality as the Matlab interface. 
 For questions regarding GRAMPC please refer to the [grampc](https://github.com/grampc/grampc) repository.
+
+## PyGRAMPC is now included into GRAMPC! When looking for the up to date interface, please refer to the GRAMPC repository
 
 ## Features 
 
